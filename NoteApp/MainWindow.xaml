@@ -1,0 +1,35 @@
+﻿<Window x:Class="NoteApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NoteApp"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" ResizeMode="CanResizeWithGrip" AllowsTransparency="True" WindowStyle="None" Background="{x:Null}" MouseLeftButtonDown="Drag">
+    <Border CornerRadius="5" Background="Black" BorderBrush="Gray" BorderThickness="0.3">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="7*"></RowDefinition>
+                
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
+                <ColumnDefinition Width="4*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Ellipse Fill="Red" Grid.Row="0" Grid.Column="2" Height="15" Width="15" HorizontalAlignment="Right"
+                VerticalAlignment="Top" Margin="0,10,10,0" MouseLeftButtonDown="closeApp" Cursor="Hand"></Ellipse>
+            <Ellipse Fill="Yellow" Grid.Row="0" Grid.Column="2" Height="15" Width="15" HorizontalAlignment="Right"
+                VerticalAlignment="Top" Margin="0,10,30,0" MouseLeftButtonDown="minimizeApp" Cursor="Hand"></Ellipse>
+            <RichTextBox Grid.Row="1" Grid.Column="2"  Background="Black" SelectionTextBrush="{x:Null}" Foreground="#7FD4C8C8" SelectionBrush="{x:Null}"></RichTextBox>
+            <DockPanel Grid.Row="1" Grid.Column="1">
+                <TextBlock></TextBlock>
+                <TextBlock></TextBlock>
+                <TextBlock></TextBlock>
+            </DockPanel>
+            
+        </Grid>
+    </Border>
+</Window>
