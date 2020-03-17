@@ -23,12 +23,22 @@
                 VerticalAlignment="Top" Margin="0,10,10,0" MouseLeftButtonDown="closeApp" Cursor="Hand"></Ellipse>
             <Ellipse Fill="Yellow" Grid.Row="0" Grid.Column="2" Height="15" Width="15" HorizontalAlignment="Right"
                 VerticalAlignment="Top" Margin="0,10,30,0" MouseLeftButtonDown="minimizeApp" Cursor="Hand"></Ellipse>
-            <RichTextBox Grid.Row="1" Grid.Column="2"  Background="Black" SelectionTextBrush="{x:Null}" Foreground="#7FD4C8C8" SelectionBrush="{x:Null}"></RichTextBox>
-            <DockPanel Grid.Row="1" Grid.Column="1">
-                <TextBlock></TextBlock>
-                <TextBlock></TextBlock>
-                <TextBlock></TextBlock>
-            </DockPanel>
+            <RichTextBox Name="NotePad" Grid.Row="1" Grid.Column="2"  Background="White"  Foreground="#7FD4C8C8" IsDocumentEnabled="True" TextChanged="CheckText"/>
+            <ScrollViewer Grid.Row="1" Grid.Column="1">
+                <StackPanel Grid.Row="1" Grid.Column="1" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <TextBlock Height="100" Background="#FFCB3E3E"></TextBlock>
+                <TextBlock Height="100" Background="#FF664A4A"></TextBlock>
+                <TextBlock Height="100" Background="#FF9B9595"></TextBlock>
+                <TextBlock Height="100" Background="#FF8B3939"></TextBlock>
+                <TextBlock Height="100" Background="#FFBB3030"></TextBlock>
+
+            </StackPanel>
+            </ScrollViewer>
+            <StackPanel Grid.Row="1" Grid.Column="0">
+                <Button Background="#FFCD0D0D"></Button>
+                <Button Background="#FFA46868"></Button>
+                <Button></Button>
+            </StackPanel>
             
         </Grid>
     </Border>

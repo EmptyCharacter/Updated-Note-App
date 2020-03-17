@@ -20,6 +20,7 @@ namespace NoteApp
     /// </summary>
     public partial class MainWindow : Window
     {
+        private bool textHasChanged = false;
         public MainWindow()
         {
             InitializeComponent();
@@ -62,5 +63,50 @@ namespace NoteApp
                 MessageBox.Show(ex.Message);
             }
         }
+
+
+        private void AutoSave()
+        {
+            //check if CheckText has been called
+            if(textHasChanged == true)
+            {
+                //if true, then; check if a file for this object already exists
+                if()
+                {
+                    //if file exists, then; overwrite that same file
+                }
+                else
+                {
+                    //if DNE, then; create a new file and write there.
+                }
+            }
+            else
+            {
+                //if false, then; do nothing
+            }
+        }
+
+        //check if a file already exists
+        private void CheckFile()
+        {
+            
+            if()
+            {
+
+            }
+        }
+
+
+        //Run method when the text has been updated
+        private void CheckText(object sender, TextChangedEventArgs e)
+        {
+            if (textHasChanged == false)
+            {
+                textHasChanged = true;
+                AutoSave();
+            }
+            textHasChanged = false;
+        }
+
     }
 }
