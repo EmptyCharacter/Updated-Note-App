@@ -28,15 +28,17 @@ namespace NoteApp
     public partial class MainWindow : Window
     {
 
-        private static Timer thisTimer;
-        private bool TwoSecondsElapsed = false;
-        
+        private static Timer thisTimer = new Timer();
+        private bool keyPressed = false;
+        private bool thcCalled = false;
+        private bool timeElapsed = false;
 
 
 
         public MainWindow()
         {
             InitializeComponent();
+            
         }
 
         private void Drag(object sender, MouseButtonEventArgs e)
@@ -76,42 +78,42 @@ namespace NoteApp
                 MessageBox.Show(ex.Message);
             }
         }
-    
-        
-         
-        void testc()
+
+
+        void SaveXamlPackage(string _fileName)
         {
-            Console.WriteLine("sdfgsdf");
+            TextRange range;
+            FileStream fStream;
+            range = new TextRange(NotePad.Document.ContentStart, NotePad.Document.ContentEnd);
+            fStream = new FileStream(_fileName, FileMode.Create);
+            range.Save(fStream, DataFormats.XamlPackage);
+            fStream.Close();
         }
 
-
-        private void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
+        private void HasChanged(Object sender, ElapsedEventArgs args)
         {
-            
             thisTimer.Stop();
-            TwoSecondsElapsed = true;
+            SaveXamlPackage("C:\\Users\\kl\\source\\repos\\NoteApp\\TextFilestest.xaml");
+
         }
-        private void Timer()
-        {
-            thisTimer = new System.Timers.Timer();
-            thisTimer.Interval = 2000;
-            thisTimer.AutoReset = true;
-            thisTimer.Enabled = true;
-            if (TwoSecondsElapsed == true)
-            {
-                testc();
-            }
-        }
-       
 
         private void TextHasChanged(object sender, TextChangedEventArgs e)
         {
-            Timer();
-    
-                        
+            thcCalled = true;
+            thisTimer.Start();
+            
+             
+        }
+
+        
+
+        //currently works but will repeat after 2 seconds
+        //should reset timer if the user is typing
+        private void Timer(object sender, RoutedEventArgs e)
+        {
+            thisTimer.Interval = 2000;
+            thisTimer.Elapsed += HasChanged;
+            
         }
     }
-
-    
-
 }
