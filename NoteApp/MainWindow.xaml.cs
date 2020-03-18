@@ -12,15 +12,28 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Timers;
+using Microsoft.Win32;
+using System.IO;
+using System.Xaml;
+
 
 namespace NoteApp
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+
+    
     public partial class MainWindow : Window
     {
-        private bool textHasChanged = false;
+
+        private static Timer thisTimer;
+        private bool TwoSecondsElapsed = false;
+        
+
+
+
         public MainWindow()
         {
             InitializeComponent();
@@ -63,50 +76,42 @@ namespace NoteApp
                 MessageBox.Show(ex.Message);
             }
         }
-
-
-        private void AutoSave()
+    
+        
+         
+        void testc()
         {
-            //check if CheckText has been called
-            if(textHasChanged == true)
-            {
-                //if true, then; check if a file for this object already exists
-                if()
-                {
-                    //if file exists, then; overwrite that same file
-                }
-                else
-                {
-                    //if DNE, then; create a new file and write there.
-                }
-            }
-            else
-            {
-                //if false, then; do nothing
-            }
+            Console.WriteLine("sdfgsdf");
         }
 
-        //check if a file already exists
-        private void CheckFile()
+
+        private void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
         {
             
-            if()
-            {
-
-            }
+            thisTimer.Stop();
+            TwoSecondsElapsed = true;
         }
-
-
-        //Run method when the text has been updated
-        private void CheckText(object sender, TextChangedEventArgs e)
+        private void Timer()
         {
-            if (textHasChanged == false)
+            thisTimer = new System.Timers.Timer();
+            thisTimer.Interval = 2000;
+            thisTimer.AutoReset = true;
+            thisTimer.Enabled = true;
+            if (TwoSecondsElapsed == true)
             {
-                textHasChanged = true;
-                AutoSave();
+                testc();
             }
-            textHasChanged = false;
         }
+       
 
+        private void TextHasChanged(object sender, TextChangedEventArgs e)
+        {
+            Timer();
+    
+                        
+        }
     }
+
+    
+
 }
