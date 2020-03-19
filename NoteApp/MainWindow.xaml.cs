@@ -27,19 +27,18 @@ namespace NoteApp
     
     public partial class MainWindow : Window
     {
-
-        private static Timer thisTimer = new Timer();
-        private bool keyPressed = false;
-        private bool thcCalled = false;
-        private bool timeElapsed = false;
-
-
+        
+        private DateTime timeSinceAutoSave;
+        private Timer autoSaveTimer;
 
         public MainWindow()
         {
             InitializeComponent();
+
             
         }
+
+        
 
         private void Drag(object sender, MouseButtonEventArgs e)
         {
@@ -79,41 +78,36 @@ namespace NoteApp
             }
         }
 
+        
 
-        void SaveXamlPackage(string _fileName)
+        private void OnAutoSaveTimer(object sender, ElapsedEventArgs e)
         {
-            TextRange range;
-            FileStream fStream;
-            range = new TextRange(NotePad.Document.ContentStart, NotePad.Document.ContentEnd);
-            fStream = new FileStream(_fileName, FileMode.Create);
-            range.Save(fStream, DataFormats.XamlPackage);
-            fStream.Close();
+            double autoSaveInterval = 2;
+            double test = ((e.SignalTime - timeSinceAutoSave).TotalSeconds);
+            Console.WriteLine(test);
+            
+            if (test > autoSaveInterval)
+            {
+                //do autosave
+                //set time since autosave to the date time now
+                Console.WriteLine("it works!");
+                timeSinceAutoSave = DateTime.Now;
+            }
         }
 
-        private void HasChanged(Object sender, ElapsedEventArgs args)
-        {
-            thisTimer.Stop();
-            SaveXamlPackage("C:\\Users\\kl\\source\\repos\\NoteApp\\TextFilestest.xaml");
-
-        }
 
         private void TextHasChanged(object sender, TextChangedEventArgs e)
         {
-            thcCalled = true;
-            thisTimer.Start();
-            
-             
+            timeSinceAutoSave = DateTime.Now;
+            Timer autoSaveTimer = new Timer(2000);
+            autoSaveTimer.Elapsed += OnAutoSaveTimer;
+            autoSaveTimer.Enabled = true;
+
         }
 
         
 
-        //currently works but will repeat after 2 seconds
-        //should reset timer if the user is typing
-        private void Timer(object sender, RoutedEventArgs e)
-        {
-            thisTimer.Interval = 2000;
-            thisTimer.Elapsed += HasChanged;
-            
-        }
+        
+        
     }
 }
