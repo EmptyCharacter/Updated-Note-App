@@ -24,12 +24,28 @@ namespace NoteApp
     /// Interaction logic for MainWindow.xaml
     /// </summary>
 
+    public partial class NoteObject 
+    {
+        private RichTextBox richTextBox { get; set;}
+        private Guid guid { get; set; }
+        public NoteObject(RichTextBox rtb, Guid g)
+        {
+            richTextBox = rtb;
+            guid = g;
+        }
+
+        
+        
     
+    }
+
+
     public partial class MainWindow : Window
     {
-        private HashSet<string> guidSet;
+        private HashSet<NoteObject> NoteSet;
         private DateTime timeSinceAutoSave;
-        private Timer autoSaveTimer;
+        private object Note;
+        
 
         public MainWindow()
         {
@@ -37,8 +53,6 @@ namespace NoteApp
 
             
         }
-
-        
 
         private void Drag(object sender, MouseButtonEventArgs e)
         {
@@ -52,7 +66,7 @@ namespace NoteApp
             }
         }
 
-        private void closeApp(object sender, MouseButtonEventArgs e)
+        private void CloseApp(object sender, MouseButtonEventArgs e)
         {
             try
             {
@@ -65,7 +79,7 @@ namespace NoteApp
             }
         }
 
-        private void minimizeApp(object sender, MouseButtonEventArgs e)
+        private void MinimizeApp(object sender, MouseButtonEventArgs e)
         {
             try
             {
@@ -78,22 +92,33 @@ namespace NoteApp
             }
         }
 
-        private void SaveFile(string guidString)
+        private void SaveFile(string str)
         {
-            if(guidSet.Contains(guidString))
+            NoteObject thisNote = new NoteObject(NotePad, g);
+            bool isEmpty = (NoteSet.Count == 0);
+            
+            
+            
+            if (NoteSet.Contains(thisNote) && !isEmpty)
             {
                 //retrive this file
                 //save to this file
             }
-            else
+            else //new note
             {
-                //create a new file with guid
+                //create new file with guid
+                var myUniqueFileName = $@"{Guid.NewGuid()}.txt";
+                NoteObject newNote = new NoteObject(NotePad, Guid.NewGuid());
+                
+
                 //save to this new file
+
                 //add this guid into the hashset
+                NoteSet.Add(newNote);
             }
         }
 
-        private string GetRichTextBoxContent(RichTextBox rtb)
+        private string GetRichTextBoxContent(RichTextBox richTextBox)
         {
             RichTextBox myRichTextBox = new RichTextBox(NotePad.Document);
 
@@ -121,6 +146,7 @@ namespace NoteApp
 
         private void TextHasChanged(object sender, TextChangedEventArgs e)
         {
+
             timeSinceAutoSave = DateTime.Now;
             Timer autoSaveTimer = new Timer(2000);
             autoSaveTimer.Elapsed += OnAutoSaveTimer;
