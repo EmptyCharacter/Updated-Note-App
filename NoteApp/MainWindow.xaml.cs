@@ -27,11 +27,11 @@ namespace NoteApp
     public partial class NoteObject 
     {
         private RichTextBox richTextBox { get; set;}
-        private Guid guid { get; set; }
-        public NoteObject(RichTextBox rtb, Guid g)
+        private string guid { get; set; }
+        public NoteObject(RichTextBox rtb, string str)
         {
             richTextBox = rtb;
-            guid = g;
+            guid = str;
         }
 
         
@@ -44,7 +44,7 @@ namespace NoteApp
     {
         private HashSet<NoteObject> NoteSet;
         private DateTime timeSinceAutoSave;
-        private object Note;
+        
         
 
         public MainWindow()
@@ -66,7 +66,7 @@ namespace NoteApp
             }
         }
 
-        private void CloseApp(object sender, MouseButtonEventArgs e)
+        private void closeApp(object sender, MouseButtonEventArgs e)
         {
             try
             {
@@ -79,7 +79,7 @@ namespace NoteApp
             }
         }
 
-        private void MinimizeApp(object sender, MouseButtonEventArgs e)
+        private void minimizeApp(object sender, MouseButtonEventArgs e)
         {
             try
             {
@@ -92,40 +92,60 @@ namespace NoteApp
             }
         }
 
-        private void SaveFile(string str)
+        private void SaveFile(string stringToSave)
         {
-            NoteObject thisNote = new NoteObject(NotePad, g);
+
+            NoteObject thisNote = new NoteObject(NotePad, stringToSave);
             bool isEmpty = (NoteSet.Count == 0);
-            
             
             
             if (NoteSet.Contains(thisNote) && !isEmpty)
             {
                 //retrive this file
                 //save to this file
+                return;
             }
             else //new note
             {
-                //create new file with guid
+                //create a new unique name for textfile
                 var myUniqueFileName = $@"{Guid.NewGuid()}.txt";
-                NoteObject newNote = new NoteObject(NotePad, Guid.NewGuid());
+
+                //declare the path to save file
+                string docPath = @"C:\Users\kl\source\repos\NoteApp\TextFiles\test.text";
+
+                //write file 
+                File.WriteAllText(docPath, stringToSave);
+                
+                //create new file with guid
+                
+               
+                
                 
 
                 //save to this new file
 
                 //add this guid into the hashset
+                NoteObject newNote = new NoteObject(NotePad, myUniqueFileName);
                 NoteSet.Add(newNote);
+                Console.WriteLine(NoteSet.Count());
             }
         }
 
         private string GetRichTextBoxContent(RichTextBox richTextBox)
         {
-            RichTextBox myRichTextBox = new RichTextBox(NotePad.Document);
+            
+            RichTextBox myRichTextBox = new RichTextBox();
+            myRichTextBox = NotePad;
+
+            FlowDocument myFlowDoc = new FlowDocument();
+
+            myRichTextBox.Document = myFlowDoc;
 
             TextRange textRange = new TextRange(
                     myRichTextBox.Document.ContentStart,
                     myRichTextBox.Document.ContentEnd
                 );
+            
             return textRange.Text;
         }
         private void OnAutoSaveTimer(object sender, ElapsedEventArgs e)
@@ -136,6 +156,7 @@ namespace NoteApp
             
             if (test > autoSaveInterval)
             {
+                //gets the text from richtextbox
                 SaveFile(GetRichTextBoxContent(NotePad));
                 //set time since autosave to the date time now
                 Console.WriteLine("it works!");
