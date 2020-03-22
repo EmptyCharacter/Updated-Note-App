@@ -27,11 +27,16 @@ namespace NoteApp
     public partial class NoteObject 
     {
         private RichTextBox richTextBox { get; set;}
-        private string guid { get; set; }
-        public NoteObject(RichTextBox rtb, string str)
+        private string str { get; set; }
+        public NoteObject(RichTextBox rtb, string fileName)
         {
             richTextBox = rtb;
-            guid = str;
+            str = fileName;
+        }
+
+        public RichTextBox GetRTB(RichTextBox thisBox)
+        {
+            return thisBox;
         }
 
         
@@ -96,36 +101,33 @@ namespace NoteApp
         private void SaveFile(string stringToSave)
         {
             
-            NoteObject thisNote = new NoteObject(NotePad, stringToSave);
+            NoteObject thisNote = new NoteObject(NotePad, "placeholder");
+            
             bool isEmpty = (NoteSet.Count == 0);
+            Console.WriteLine(NoteSet.Count);
             
-            
+            //this statement should check an a file associated with the given object is already in the collection
+            //if this is true and the set is not empty then it will overwrite the contents of that file,
+            //rather than creating a new file
             if (NoteSet.Contains(thisNote) && !isEmpty)
             {
                 //retrive this file
                 //save to this file
                 return;
             }
-            else //new note
+            else //writes text to a new text file
             {
                 //create a new unique name for textfile
                 var myUniqueFileName = $@"{Guid.NewGuid()}.txt";
 
-                //declare the path to save file
+                //Should declare path, but use the myUniqueFileName var as the file to save to...
                 string docPath = @"C:\Users\kl\source\repos\NoteApp\TextFiles\test.text";
 
-                //write file 
+                //Writes the contents of string to save to docPath
                 File.WriteAllText(docPath, stringToSave);
                 
-                //create new file with guid
                 
-               
-                
-                
-
-                //save to this new file
-
-                //add this guid into the hashset
+                //Create and add note object to hashset 
                 NoteObject newNote = new NoteObject(NotePad, myUniqueFileName);
                 NoteSet.Add(newNote);
                 Console.WriteLine(NoteSet.Count());
