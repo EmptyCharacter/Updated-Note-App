@@ -27,16 +27,29 @@ namespace NoteApp
     public partial class NoteObject 
     {
         private RichTextBox richTextBox { get; set;}
+        private string file { get; set; }
         private string str { get; set; }
-        public NoteObject(RichTextBox rtb, string fileName)
+        public NoteObject(RichTextBox rtb, string fileName, string stringToSave)
         {
             richTextBox = rtb;
-            str = fileName;
+            file = fileName;
+            str = stringToSave;
+            
         }
 
         public RichTextBox GetRTB(RichTextBox thisBox)
         {
             return thisBox;
+        }
+
+        public string GetStringToSave()
+        {
+            return this.str;
+        }
+
+        public string GetFileName()
+        {
+            return this.file;
         }
 
         
@@ -98,10 +111,9 @@ namespace NoteApp
             }
         }
 
-        private void SaveFile(string stringToSave)
+        private void SaveFile()
         {
             
-            NoteObject thisNote = new NoteObject(NotePad, "placeholder");
             
             bool isEmpty = (NoteSet.Count == 0);
             Console.WriteLine(NoteSet.Count);
@@ -109,7 +121,7 @@ namespace NoteApp
             //this statement should check an a file associated with the given object is already in the collection
             //if this is true and the set is not empty then it will overwrite the contents of that file,
             //rather than creating a new file
-            if (NoteSet.Contains(thisNote) && !isEmpty)
+            if (!isEmpty)
             {
                 //retrive this file
                 //save to this file
@@ -117,40 +129,58 @@ namespace NoteApp
             }
             else //writes text to a new text file
             {
-                //create a new unique name for textfile
-                var myUniqueFileName = $@"{DateTime.Now.Ticks}.txt";
+                NoteObject thisNote = InitializeNote();
+                string path1 = "C:\\Users\\kl\\source\\repos\\NoteApp\\TextFiles\\";
+                string path2 = thisNote.GetFileName();
 
                 //Should declare path, but use the myUniqueFileName var as the file to save to...
-                string docPath = @"C:\Users\kl\source\repos\NoteApp\TextFiles\test.text";
+                
+                string testDocPath = System.IO.Path.Combine(path1, path2);
 
                 //Writes the contents of string to save to docPath
-                File.WriteAllText(docPath, stringToSave);
+                File.WriteAllText(testDocPath, thisNote.GetStringToSave());
                 
                 
                 //Create and add note object to hashset 
-                NoteObject newNote = new NoteObject(NotePad, myUniqueFileName);
-                NoteSet.Add(newNote);
+                
+                NoteSet.Add(thisNote);
                 Console.WriteLine(NoteSet.Count());
             }
         }
 
-        private string GetRichTextBoxContent(RichTextBox richTextBox)
+        private string GetRichTextBoxContent(RichTextBox rtb)
         {
-            
-            //RichTextBox myRichTextBox = new RichTextBox();
-            
 
-           // FlowDocument myFlowDoc = new FlowDocument();
+            //RichTextBox myRichTextBox = new RichTextBox();
+
+
+            // FlowDocument myFlowDoc = new FlowDocument();
 
             //myRichTextBox.Document = myFlowDoc;
 
+            
             TextRange textRange = new TextRange(
-                    richTextBox.Document.ContentStart,
-                    richTextBox.Document.ContentEnd
+                    rtb.Document.ContentStart,
+                    rtb.Document.ContentEnd
                 );
             
             return textRange.Text;
         }
+
+        private NoteObject InitializeNote()
+        {
+            
+
+            RichTextBox textBox = NotePad;
+            string fileName = $@"{ DateTime.Now.Ticks}.txt";
+            
+            string stringToSave = GetRichTextBoxContent(NotePad);
+
+            NoteObject thisNote = new NoteObject(textBox, fileName, stringToSave);
+
+            return thisNote;
+        }
+
         private void OnAutoSaveTimer(object sender, ElapsedEventArgs e)
         {
             double autoSaveInterval = 2;
@@ -166,7 +196,7 @@ namespace NoteApp
                 //set time since autosave to the date time now
                 Console.WriteLine("it works!");
                 
-                SaveFile(GetRichTextBoxContent(NotePad));
+                SaveFile();
                 autoSaveTimer.Enabled = false;
                 timeSinceAutoSave = DateTime.Now;
 
