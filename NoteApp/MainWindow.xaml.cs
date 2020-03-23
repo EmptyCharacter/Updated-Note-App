@@ -63,6 +63,7 @@ namespace NoteApp
         private HashSet<NoteObject> NoteSet = new HashSet<NoteObject>();
         private DateTime timeSinceAutoSave;
         Timer autoSaveTimer = new Timer();
+        private bool NoteInitialized = false;
 
 
 
@@ -114,6 +115,14 @@ namespace NoteApp
         private void SaveFile()
         {
             
+
+            NoteObject tempNote = InitializeNote();
+            NoteObject thisNote = new NoteObject(null, null, null);
+
+            if (NoteInitialized == true)
+            {
+                thisNote = tempNote;
+            }
             
             bool isEmpty = (NoteSet.Count == 0);
             Console.WriteLine(NoteSet.Count);
@@ -121,21 +130,28 @@ namespace NoteApp
             //this statement should check an a file associated with the given object is already in the collection
             //if this is true and the set is not empty then it will overwrite the contents of that file,
             //rather than creating a new file
-            if (!isEmpty)
+
+            if (NoteSet.Contains(thisNote) && !isEmpty)
             {
-                //retrive this file
-                //save to this file
+                //retrive existing file path
+                string path1 = "C:\\Users\\kl\\source\\repos\\NoteApp\\TextFiles\\";
+                string path2 = thisNote.GetFileName();
+                string ExistingDocPath = System.IO.Path.Combine(path1, path2);
+
+                //save to file path
+                File.WriteAllText(ExistingDocPath, thisNote.GetStringToSave());
+
                 return;
             }
             else //writes text to a new text file
             {
-                NoteObject thisNote = InitializeNote();
-                string path1 = "C:\\Users\\kl\\source\\repos\\NoteApp\\TextFiles\\";
-                string path2 = thisNote.GetFileName();
+                
+                string path3 = "C:\\Users\\kl\\source\\repos\\NoteApp\\TextFiles\\";
+                string path4 = thisNote.GetFileName();
 
                 //Should declare path, but use the myUniqueFileName var as the file to save to...
                 
-                string testDocPath = System.IO.Path.Combine(path1, path2);
+                string testDocPath = System.IO.Path.Combine(path3, path4);
 
                 //Writes the contents of string to save to docPath
                 File.WriteAllText(testDocPath, thisNote.GetStringToSave());
@@ -177,6 +193,8 @@ namespace NoteApp
             string stringToSave = GetRichTextBoxContent(NotePad);
 
             NoteObject thisNote = new NoteObject(textBox, fileName, stringToSave);
+
+            NoteInitialized = true;
 
             return thisNote;
         }
