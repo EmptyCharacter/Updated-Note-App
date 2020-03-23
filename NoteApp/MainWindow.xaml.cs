@@ -118,7 +118,7 @@ namespace NoteApp
             else //writes text to a new text file
             {
                 //create a new unique name for textfile
-                var myUniqueFileName = $@"{Guid.NewGuid()}.txt";
+                var myUniqueFileName = $@"{DateTime.Now.Ticks}.txt";
 
                 //Should declare path, but use the myUniqueFileName var as the file to save to...
                 string docPath = @"C:\Users\kl\source\repos\NoteApp\TextFiles\test.text";
