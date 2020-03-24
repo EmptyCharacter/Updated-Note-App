@@ -63,8 +63,9 @@ namespace NoteApp
         private HashSet<NoteObject> NoteSet = new HashSet<NoteObject>();
         private DateTime timeSinceAutoSave;
         Timer autoSaveTimer = new Timer();
-        private bool NoteInitialized = false;
-
+        private bool AlreadyInitialized = false;
+        private string tempString;
+        
 
 
         public MainWindow()
@@ -114,16 +115,20 @@ namespace NoteApp
 
         private void SaveFile()
         {
-            
 
-            NoteObject tempNote = InitializeNote();
-            NoteObject thisNote = new NoteObject(null, null, null);
+            //so this will create a new instance of the file name each time the autosave occurs which is not ideal.
+            //that will lead to the same text instance receiving multiple different file names and files associated with it
+            //this doesnt allow us to compare if the same instance is inside of the hashset becasue it just creates a new one each time
+            //we need to move away from this by setting conditions to check whether or not the note has already been created
+            //if it already has been created then we wont initialize again and we will just use the previous instance to create the file
+            //There is something in this puzzle that i am not paying attention to and is causing thisissue
+            //I tried to implement a bool within the initialize note method that will turn true when that method is run
+            //then placing a check back in the save method but because this method will get called everytime a save is occured, the
+            //bool is always set to true which basicallly negates the entire purpose of that check statement and bool
+            //we need to re-organize the logic in a way to store it in a temporary spot
+            //NoteObject tempNote = InitializeNote();
 
-            if (NoteInitialized == true)
-            {
-                thisNote = tempNote;
-            }
-            
+            NoteObject thisNote = InitializeNote();
             bool isEmpty = (NoteSet.Count == 0);
             Console.WriteLine(NoteSet.Count);
             
@@ -186,17 +191,31 @@ namespace NoteApp
         private NoteObject InitializeNote()
         {
             
-
-            RichTextBox textBox = NotePad;
-            string fileName = $@"{ DateTime.Now.Ticks}.txt";
             
-            string stringToSave = GetRichTextBoxContent(NotePad);
+            if(AlreadyInitialized == false)
+            {
+                RichTextBox textBox = NotePad;
+                string fileName = $@"{ DateTime.Now.Ticks}.txt";
+                tempString = fileName;
+                string stringToSave = GetRichTextBoxContent(NotePad);
 
-            NoteObject thisNote = new NoteObject(textBox, fileName, stringToSave);
+                NoteObject thisNote = new NoteObject(textBox, fileName, stringToSave);
+                AlreadyInitialized = true;
+                return thisNote;
+            }
+            else
+            {
+                RichTextBox textBox = NotePad;
+                //this should set the string to just be the same name that was first created with the file
+                string sameFileName = tempString;
+                string stringToSave = GetRichTextBoxContent(NotePad);
+                NoteObject thisNote = new NoteObject(textBox, sameFileName, stringToSave);
+                return thisNote;
+            }
+            
+            
 
-            NoteInitialized = true;
-
-            return thisNote;
+            
         }
 
         private void OnAutoSaveTimer(object sender, ElapsedEventArgs e)
