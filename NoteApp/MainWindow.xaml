@@ -36,7 +36,7 @@
             <Border Grid.Row="1" Grid.Column="1" BorderBrush="Gray" BorderThickness="0.1" >
                 <ScrollViewer >
                 
-                    <DockPanel   ScrollViewer.VerticalScrollBarVisibility="Auto" Width="271">
+                    <DockPanel x:Name="DockHere"   ScrollViewer.VerticalScrollBarVisibility="Auto" Width="271">
                         
                     <TextBlock Height="100" Background="Black" ></TextBlock>
                     <TextBlock Background="White" Height="100"/>

@@ -24,6 +24,10 @@ namespace NoteApp
     /// Interaction logic for MainWindow.xaml
     /// </summary>
 
+
+
+    /*-------------------------- Custom Object Partial Class ------------------------------------------*/
+
     public partial class NoteObject 
     {
         private RichTextBox richTextBox { get; set;}
@@ -60,13 +64,15 @@ namespace NoteApp
 
     public partial class MainWindow : Window
     {
+        /*-------------------------- Variables ------------------------------------------*/
+
         private HashSet<NoteObject> NoteSet = new HashSet<NoteObject>();
         private DateTime timeSinceAutoSave;
         Timer autoSaveTimer = new Timer();
         private bool AlreadyInitialized = false;
         private string tempString;
-        
 
+        /*-------------------------- Main ------------------------------------------*/
 
         public MainWindow()
         {
@@ -152,6 +158,8 @@ namespace NoteApp
 
                 //save to file path
                 File.WriteAllText(ExistingDocPath, thisNote.GetStringToSave());
+                List<string> stringList = new List<string>();
+                
 
                 return;
             }
@@ -262,7 +270,10 @@ namespace NoteApp
         /*-------------------------- Load Note Previews Feature------------------------------------------*/
 
 
-
+        public void testMethod()
+        {
+            DockHere.Children.Add()
+        }
 
     }
 }
