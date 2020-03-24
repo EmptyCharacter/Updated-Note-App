@@ -75,6 +75,7 @@ namespace NoteApp
             
         }
 
+         /*-------------------------- Title Bar Buttons------------------------------------------*/
         private void Drag(object sender, MouseButtonEventArgs e)
         {
             try
@@ -112,7 +113,13 @@ namespace NoteApp
                 MessageBox.Show(ex.Message);
             }
         }
+        private void MaximizeApp(object sender, MouseButtonEventArgs e)
+        {
+            this.Width = SystemParameters.WorkArea.Width;
+            this.Height = SystemParameters.WorkArea.Height;
+        }
 
+        /*--------------------------Auto Save Feature------------------------------------------*/
         private void SaveFile()
         {
 
@@ -252,9 +259,10 @@ namespace NoteApp
 
         }
 
-        
+        /*-------------------------- Load Note Previews Feature------------------------------------------*/
 
-        
-        
+
+
+
     }
 }

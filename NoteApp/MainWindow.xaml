@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NoteApp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" ResizeMode="CanResizeWithGrip" AllowsTransparency="True" WindowStyle="None" Background="{x:Null}" MouseLeftButtonDown="Drag">
+        Title="MainWindow" Height="500" Width="700" ResizeMode="CanResizeWithGrip" AllowsTransparency="True" WindowStyle="None" Background="{x:Null}" MouseLeftButtonDown="Drag">
     <Border CornerRadius="5" Background="Black" BorderBrush="Gray" BorderThickness="0.3">
         <Grid>
             <Grid.RowDefinitions>
@@ -14,27 +14,45 @@
 
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="2*"></ColumnDefinition>
+                <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                <ColumnDefinition Width="3*"></ColumnDefinition>
                 <ColumnDefinition Width="4*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
+            <StackPanel Grid.Row="0" Grid.Column="0" >
+                <Image Source="/Assets/wolf.jpg" Height="50" Width="45" Stretch="Fill"/>
+            </StackPanel>
+            
             <Ellipse Fill="Red" Grid.Row="0" Grid.Column="2" Height="15" Width="15" HorizontalAlignment="Right"
                 VerticalAlignment="Top" Margin="0,10,10,0" MouseLeftButtonDown="closeApp" Cursor="Hand"></Ellipse>
             <Ellipse Fill="Orange" Grid.Row="0" Grid.Column="2" Height="15" Width="15" HorizontalAlignment="Right"
-                VerticalAlignment="Top" Margin="0,10,30,0" MouseLeftButtonDown="minimizeApp" Cursor="Hand"></Ellipse>
-            <RichTextBox x:Name="NotePad" Grid.Row="1" Grid.Column="2" BorderThickness="0" Background="Black"  Foreground="#7FD4C8C8" IsDocumentEnabled="True" TextChanged="TextHasChanged"/>
-            <ScrollViewer Grid.Row="1" Grid.Column="1">
-                <StackPanel Grid.Row="1" Grid.Column="1" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                VerticalAlignment="Top" Margin="0,10,50,0" MouseLeftButtonDown="minimizeApp" Cursor="Hand"></Ellipse>
+            <Ellipse Fill="LimeGreen" Grid.Row="0" Grid.Column="2" Height="15" Width="15" HorizontalAlignment="Right"
+                VerticalAlignment="Top" Margin="0,10,30,0" MouseLeftButtonDown="MaximizeApp" Cursor="Hand"></Ellipse>
+            
+            
+            <RichTextBox x:Name="NotePad" Grid.Row="1" Grid.Column="2" BorderThickness="0.2" Background="Black" BorderBrush="Gray"  Foreground="#7FD4C8C8" IsDocumentEnabled="True" TextChanged="TextHasChanged"/>
 
-
-                    <TextBlock Height="100" Width="220" Background="#FF664A4A" ></TextBlock>
-                    <TextBlock Height="100" Width="220" Background="#FF664A4A" ></TextBlock>
-                    <TextBlock Height="100" Width="220" Background="#FF664A4A" ></TextBlock>
-                    <TextBlock Height="100" Width="220" Background="#FF664A4A" ></TextBlock>
-                </StackPanel>
+            <Border Grid.Row="1" Grid.Column="1" BorderBrush="Gray" BorderThickness="0.1" >
+                <ScrollViewer >
+                
+                    <DockPanel   ScrollViewer.VerticalScrollBarVisibility="Auto" Width="271">
+                        
+                    <TextBlock Height="100" Background="Black" ></TextBlock>
+                    <TextBlock Background="White" Height="100"/>
+                    <TextBlock Height="100" Background="Black"></TextBlock>
+                    <TextBlock Height="100" Background="Black"></TextBlock>
+                    <TextBlock Height="100" Background="Black"></TextBlock>
+                    <TextBlock Height="100" Background="Black"></TextBlock>
+                    <TextBlock Height="100" Background="Black"></TextBlock>
+                    <TextBlock Height="100" Background="Black"></TextBlock>
+                        
+                </DockPanel>
+               
             </ScrollViewer>
-            <StackPanel Grid.Row="1" Grid.Column="0">
+            </Border>
+
+            <StackPanel  Grid.Row="1" Grid.Column="0">
                 <Button Background="#FFCD0D0D"></Button>
                 <Button Background="#FFA46868"></Button>
                 <Button></Button>
