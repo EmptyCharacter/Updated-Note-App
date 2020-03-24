@@ -36,18 +36,11 @@
             <Border Grid.Row="1" Grid.Column="1" BorderBrush="Gray" BorderThickness="0.1" >
                 <ScrollViewer >
                 
-                    <DockPanel x:Name="DockHere"   ScrollViewer.VerticalScrollBarVisibility="Auto" Width="271">
+                    <StackPanel x:Name="StackHere"   ScrollViewer.VerticalScrollBarVisibility="Auto" Width="271">
                         
-                    <TextBlock Height="100" Background="Black" ></TextBlock>
-                    <TextBlock Background="White" Height="100"/>
-                    <TextBlock Height="100" Background="Black"></TextBlock>
-                    <TextBlock Height="100" Background="Black"></TextBlock>
-                    <TextBlock Height="100" Background="Black"></TextBlock>
-                    <TextBlock Height="100" Background="Black"></TextBlock>
-                    <TextBlock Height="100" Background="Black"></TextBlock>
-                    <TextBlock Height="100" Background="Black"></TextBlock>
+                    
                         
-                </DockPanel>
+                </StackPanel>
                
             </ScrollViewer>
             </Border>

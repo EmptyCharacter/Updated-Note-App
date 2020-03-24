@@ -77,7 +77,7 @@ namespace NoteApp
         public MainWindow()
         {
             InitializeComponent();
-
+            LoadContent();
             
         }
 
@@ -270,9 +270,47 @@ namespace NoteApp
         /*-------------------------- Load Note Previews Feature------------------------------------------*/
 
 
-        public void testMethod()
+        private List<string> LoadList()
         {
-            DockHere.Children.Add()
+            string dirPath = "C:\\Users\\kl\\source\\repos\\NoteApp\\TextFiles\\";
+            List<string> fileList = Directory.EnumerateFiles(dirPath, "*.txt").ToList();
+            return fileList;
+        }
+
+        private List<string> ExtractContent()
+        {
+            string contents = "";
+            string dirPath = "C:\\Users\\kl\\source\\repos\\NoteApp\\TextFiles\\";
+            List<string> fileList = LoadList();
+            List<string> contentList = new List<string>();
+            foreach(string file in fileList)
+            {
+                string filePath = System.IO.Path.Combine(dirPath, file);
+                contentList.Add(contents = File.ReadAllText(filePath));
+            }
+            return contentList;
+        }
+
+        private List<RichTextBox> WriteContent()
+        {
+            List<string> contentToWrite = ExtractContent();
+            List<RichTextBox> RTBList = new List<RichTextBox>();
+            foreach(string str in contentToWrite)
+            {
+                FlowDocument flowDoc = new FlowDocument(new Paragraph(new Run(str)));
+                RichTextBox rtb = new RichTextBox(flowDoc);
+                RTBList.Add(rtb);
+            }
+            return RTBList;
+        }
+
+        private void LoadContent()
+        {
+            List<RichTextBox> RTBToLoad = WriteContent();
+            foreach(RichTextBox rtb in RTBToLoad)
+            {
+                StackHere.Children.Add(rtb);
+            }
         }
 
     }
