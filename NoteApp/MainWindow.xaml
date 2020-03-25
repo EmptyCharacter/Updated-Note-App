@@ -33,17 +33,13 @@
             
             <RichTextBox x:Name="NotePad" Grid.Row="1" Grid.Column="2" BorderThickness="0.2" Background="Black" BorderBrush="Gray"  Foreground="#7FD4C8C8" IsDocumentEnabled="True" TextChanged="TextHasChanged"/>
 
-            <Border Grid.Row="1" Grid.Column="1" BorderBrush="Gray" BorderThickness="0.1" >
-                <ScrollViewer >
+
+            <ScrollViewer Grid.Row="1" Grid.Column="1" BorderBrush="Gray" BorderThickness="0.1" >
                 
-                    <StackPanel x:Name="StackHere"   ScrollViewer.VerticalScrollBarVisibility="Auto" Width="271">
-                        
-                    
-                        
-                </StackPanel>
-               
+                <StackPanel x:Name="StackHere"  ScrollViewer.VerticalScrollBarVisibility="Auto" Width="271"/>
+
             </ScrollViewer>
-            </Border>
+            
 
             <StackPanel  Grid.Row="1" Grid.Column="0">
                 <Button Background="#FFCD0D0D"></Button>
