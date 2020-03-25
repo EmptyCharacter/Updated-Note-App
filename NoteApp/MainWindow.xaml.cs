@@ -28,16 +28,16 @@ namespace NoteApp
 
     /*-------------------------- Custom Object Partial Class ------------------------------------------*/
 
-    public partial class NoteObject 
+    public partial class NotePadObject 
     {
-        private RichTextBox richTextBox { get; set;}
-        private string file { get; set; }
-        private string str { get; set; }
-        public NoteObject(RichTextBox rtb, string fileName, string stringToSave)
+        private RichTextBox RichTextBox { get; set;}
+        private string File { get; set; }
+        private string Str { get; set; }
+        public NotePadObject(RichTextBox rtb, string fileName, string stringToSave)
         {
-            richTextBox = rtb;
-            file = fileName;
-            str = stringToSave;
+            RichTextBox = rtb;
+            File = fileName;
+            Str = stringToSave;
             
         }
 
@@ -48,12 +48,12 @@ namespace NoteApp
 
         public string GetStringToSave()
         {
-            return this.str;
+            return this.Str;
         }
 
         public string GetFileName()
         {
-            return this.file;
+            return this.File;
         }
 
         
@@ -61,12 +61,16 @@ namespace NoteApp
     
     }
 
+    
+
+
 
     public partial class MainWindow : Window
     {
         /*-------------------------- Variables ------------------------------------------*/
 
-        private HashSet<NoteObject> NoteSet = new HashSet<NoteObject>();
+        private HashSet<NotePadObject> NoteSet = new HashSet<NotePadObject>();
+        
         private DateTime timeSinceAutoSave;
         Timer autoSaveTimer = new Timer();
         private bool AlreadyInitialized = false;
@@ -95,7 +99,7 @@ namespace NoteApp
             }
         }
 
-        private void closeApp(object sender, MouseButtonEventArgs e)
+        private void CloseApp(object sender, MouseButtonEventArgs e)
         {
             try
             {
@@ -108,7 +112,7 @@ namespace NoteApp
             }
         }
 
-        private void minimizeApp(object sender, MouseButtonEventArgs e)
+        private void MinimizeApp(object sender, MouseButtonEventArgs e)
         {
             try
             {
@@ -142,7 +146,7 @@ namespace NoteApp
             //we need to re-organize the logic in a way to store it in a temporary spot
             //NoteObject tempNote = InitializeNote();
 
-            NoteObject thisNote = InitializeNote();
+            NotePadObject thisNote = InitializeNote();
             bool isEmpty = (NoteSet.Count == 0);
             Console.WriteLine(NoteSet.Count);
             
@@ -204,7 +208,7 @@ namespace NoteApp
             return textRange.Text;
         }
 
-        private NoteObject InitializeNote()
+        private NotePadObject InitializeNote()
         {
             
             
@@ -215,7 +219,7 @@ namespace NoteApp
                 tempString = fileName;
                 string stringToSave = GetRichTextBoxContent(NotePad);
 
-                NoteObject thisNote = new NoteObject(textBox, fileName, stringToSave);
+                NotePadObject thisNote = new NotePadObject(textBox, fileName, stringToSave);
                 AlreadyInitialized = true;
                 return thisNote;
             }
@@ -225,7 +229,7 @@ namespace NoteApp
                 //this should set the string to just be the same name that was first created with the file
                 string sameFileName = tempString;
                 string stringToSave = GetRichTextBoxContent(NotePad);
-                NoteObject thisNote = new NoteObject(textBox, sameFileName, stringToSave);
+                NotePadObject thisNote = new NotePadObject(textBox, sameFileName, stringToSave);
                 return thisNote;
             }
             
@@ -265,29 +269,38 @@ namespace NoteApp
             autoSaveTimer.Elapsed += OnAutoSaveTimer;
             autoSaveTimer.AutoReset = false;
             autoSaveTimer.Enabled = true;
+            
 
         }
 
-        /*-------------------------- Load Note Previews Feature------------------------------------------*/
+        /*---------------------------------- NotePreview Methods ----------------------------------------------------*/
 
+        
+        
+        
+
+
+
+        /*-------------------------- Load Note Previews Feature------------------------------------------*/
 
         private List<string> LoadList()
         {
             string dirPath = "C:\\Users\\kl\\source\\repos\\NoteApp\\TextFiles\\";
             List<string> fileList = Directory.EnumerateFiles(dirPath, "*.txt").ToList();
+            fileList.Reverse();
             return fileList;
         }
 
         private List<string> ExtractContent()
         {
-            string contents = "";
+            
             string dirPath = "C:\\Users\\kl\\source\\repos\\NoteApp\\TextFiles\\";
             List<string> fileList = LoadList();
             List<string> contentList = new List<string>();
             foreach(string file in fileList)
             {
                 string filePath = System.IO.Path.Combine(dirPath, file);
-                contentList.Add(contents = File.ReadAllText(filePath));
+                contentList.Add(File.ReadAllText(filePath));
             }
             return contentList;
         }
@@ -373,7 +386,11 @@ namespace NoteApp
             return rtb.Selection.Text;
         }
 
-
+        public void testmethod()
+        {
+            
+        }
+         
 
     }
 }
