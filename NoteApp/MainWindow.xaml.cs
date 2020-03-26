@@ -26,57 +26,18 @@ namespace NoteApp
 
 
 
-    /*-------------------------- Custom Object Partial Class ------------------------------------------*/
-
-    public partial class NotePadObject 
-    {
-        private RichTextBox RichTextBox { get; set;}
-        private string File { get; set; }
-        private string Str { get; set; }
-        public NotePadObject(RichTextBox rtb, string fileName, string stringToSave)
-        {
-            RichTextBox = rtb;
-            File = fileName;
-            Str = stringToSave;
-            
-        }
-
-        public RichTextBox GetRTB(RichTextBox thisBox)
-        {
-            return thisBox;
-        }
-
-        public string GetStringToSave()
-        {
-            return this.Str;
-        }
-
-        public string GetFileName()
-        {
-            return this.File;
-        }
-
-        
-        
-    
-    }
-
-    
-
-
-
     public partial class MainWindow : Window
     {
         /*-------------------------- Variables ------------------------------------------*/
 
-        private HashSet<NotePadObject> NoteSet = new HashSet<NotePadObject>();
         
         private DateTime timeSinceAutoSave;
         Timer autoSaveTimer = new Timer();
-        private bool AlreadyInitialized = false;
+        
         private string tempString;
         private string folderPath = "C:\\Users\\kl\\source\\repos\\NoteApp\\TextFiles\\";
         private string newFileName = $@"{ DateTime.Now.Ticks}.txt";
+        private string addedText;
 
         /*-------------------------- Main ------------------------------------------*/
 
@@ -136,42 +97,29 @@ namespace NoteApp
         private void SaveFile()
         {
 
-            //So if there is already a file associated with this object then save there, otherwise just save to a new file
+           
+            //this statement should check an a file associated with the given object is already in the directory
+            //if this is true then it will overwrite the contents of that file,
 
-            NotePadObject thisNote = InitializeNote();
-            bool isEmpty = (NoteSet.Count == 0);
-            Console.WriteLine(NoteSet.Count);
-            
-            //this statement should check an a file associated with the given object is already in the collection
-            //if this is true and the set is not empty then it will overwrite the contents of that file,
-            //rather than creating a new file
-
-            if (NoteSet.Contains(thisNote) && !isEmpty)
+            if (FileExists(NotePad) == true)
             {
                 //retrive existing file path
-                
-                string path2 = thisNote.GetFileName();
+
+                string path2 = GetRTBFileName(NotePad);
                 string ExistingDocPath = System.IO.Path.Combine(folderPath, path2);
 
                 //save to file path
-                File.WriteAllText(ExistingDocPath, thisNote.GetStringToSave());
-                
-                
+                File.WriteAllText(ExistingDocPath, GetRichTextBoxContent(NotePad));
 
-                return;
             }
             else //writes text to a new text file
             {
-                
+
                 string testDocPath = System.IO.Path.Combine(folderPath, newFileName);
 
                 //Writes the contents of string to save to docPath
-                File.WriteAllText(testDocPath, thisNote.GetStringToSave());
-                
-                
-                //Create and add note object to hashset  
-                NoteSet.Add(thisNote);
-               
+                File.WriteAllText(testDocPath, GetRichTextBoxContent(NotePad));
+
             }
         }
 
@@ -194,36 +142,7 @@ namespace NoteApp
             return textRange.Text;
         }
 
-        private NotePadObject InitializeNote()
-        {
-            
-            
-            if(AlreadyInitialized == false)
-            {
-                RichTextBox textBox = NotePad;
-                string fileName = $@"{ DateTime.Now.Ticks}.txt";
-                tempString = fileName;
-                string stringToSave = GetRichTextBoxContent(NotePad);
-
-                NotePadObject thisNote = new NotePadObject(textBox, fileName, stringToSave);
-                AlreadyInitialized = true;
-                return thisNote;
-            }
-            else
-            {
-                RichTextBox textBox = NotePad;
-                //this should set the string to just be the same name that was first created with the file
-                string sameFileName = tempString;
-                string stringToSave = GetRichTextBoxContent(NotePad);
-                NotePadObject thisNote = new NotePadObject(textBox, sameFileName, stringToSave);
-                return thisNote;
-            }
-            
-            
-
-            
-        }
-
+        
         private void OnAutoSaveTimer(object sender, ElapsedEventArgs e)
         {
             double autoSaveInterval = 2;
@@ -249,6 +168,11 @@ namespace NoteApp
 
         private void TextHasChanged(object sender, TextChangedEventArgs e)
         {
+            RichTextBox textBox = sender as RichTextBox;
+            if(textBox != null)
+            {
+                addedText = GetRichTextBoxContent(textBox);
+            }
 
             timeSinceAutoSave = DateTime.Now;
             Timer autoSaveTimer = new Timer(2000);
@@ -260,10 +184,34 @@ namespace NoteApp
         }
 
         /*---------------------------------- NotePreview Methods ----------------------------------------------------*/
-
-        private string GetRTBFileName()
+        private bool FileExists(RichTextBox rtb)
         {
-            string currentContents = GetRichTextBoxContent(NotePad);
+            bool found = new bool();  
+            string currentText = GetRichTextBoxContent(rtb);
+            string temp = currentText + addedText;
+            Dictionary<string, string> compareThis = FileContentPair();
+            foreach (KeyValuePair<string, string> kvp in compareThis)
+            {
+                if (kvp.Value == currentText)
+                {
+                    found = true;
+                }
+                else
+                {
+                    found = false;
+                }
+            }
+            return found;
+        }
+        private void AppendNewText(string l)
+        {
+
+        }
+
+        private string GetRTBFileName(RichTextBox rtb)
+        {
+            string currentContents = GetRichTextBoxContent(rtb);
+
             string fileFound = "";
             Dictionary<string, string> compareThis = FileContentPair();
             foreach(KeyValuePair<string,string> kvp in compareThis)
