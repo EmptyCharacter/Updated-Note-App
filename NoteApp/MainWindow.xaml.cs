@@ -26,9 +26,28 @@ namespace NoteApp
     /// </summary>
 
 
+    public partial class Note 
+    {
+        private string str;
+        public Note(string file)
+        {
+            str = file;
+        }
+
+        public string getNoteFileName()
+        {
+            return str;
+        }
+    
+    
+    }
+
+        
 
     public partial class MainWindow : Window
     {
+
+
         /*-------------------------- Variables ------------------------------------------*/
 
         
@@ -37,7 +56,7 @@ namespace NoteApp
         
         
         private string folderPath = "C:\\Users\\kl\\source\\repos\\NoteApp\\TextFiles\\";
-        private string newFileName = $@"{ DateTime.Now.Ticks}.txt";
+        private string createFilePath = $@"{ DateTime.Now.Ticks}.txt";
         private string addedText;
         private bool testc;
 
@@ -107,20 +126,20 @@ namespace NoteApp
             {
                 //retrive existing file path
 
-                string path2 = GetRTBFileName(NotePad);
-                string ExistingDocPath = System.IO.Path.Combine(folderPath, path2);
+                string filePath = GetRTBFileName(NotePad);
+                string existingFullPath = System.IO.Path.Combine(folderPath, filePath);
 
                 //save to file path
-                File.WriteAllText(ExistingDocPath, GetRichTextBoxContent(NotePad));
+                File.WriteAllText(existingFullPath, GetRichTextBoxContent(NotePad));
 
             }
             else //writes text to a new text file
             {
 
-                string testDocPath = System.IO.Path.Combine(folderPath, newFileName);
+                string newFullPath = System.IO.Path.Combine(folderPath, createFilePath);
 
                 //Writes the contents of string to save to docPath
-                File.WriteAllText(testDocPath, GetRichTextBoxContent(NotePad));
+                File.WriteAllText(newFullPath, GetRichTextBoxContent(NotePad));
 
             }
         }
@@ -170,17 +189,20 @@ namespace NoteApp
 
         private void TextHasChanged(object sender, TextChangedEventArgs e)
         {
-            
-           
-            
-            
-            if(testc == false)
+
+            //only want to execute this if the preview event has been fired
+            //other wise just use the timer normally
+            RichTextBox textBox = sender as RichTextBox;
+            if (textBox != null)
             {
-                RichTextBox textBox = sender as RichTextBox;
-                if (textBox != null)
-                {
-                    addedText = GetRichTextBoxContent(textBox);
-                }
+                addedText = GetRichTextBoxContent(textBox);
+            }
+
+
+            if (testc == false)
+            {
+                //this timer should be reset if the user is still typing
+                //to prevent excess calls to methods
                 timeSinceAutoSave = DateTime.Now;
                 Timer autoSaveTimer = new Timer(2000);
                 autoSaveTimer.Elapsed += OnAutoSaveTimer;
@@ -193,27 +215,34 @@ namespace NoteApp
 
     }
 
-        /*---------------------------------- NotePreview Methods ----------------------------------------------------*/
+        /*---------------------------------- Methods To View Preview Panel Notes ----------------------------------------------------*/
 
-        
-
+        // Method should fire when the user clicks on a Panel Object
         public void PreviewBoxClicked(object sender, MouseButtonEventArgs e)
         {
             testc = true;
             var thisBox = sender as RichTextBox;
-            //RichTextBox thisBox = (RichTextBox)e.OriginalSource;
-            if(IsRichTextBoxEmpty(NotePad) == false)
-            {
-                SaveFile();
-                
-                LoadContent();
-                
-            }
+            //first check if notepad needs to be saved before continuing with swap
+            PreventDataLoss();
             
             MovePreview(thisBox);
             testc = false;
         }
 
+        private void PreventDataLoss()
+        {
+            if (IsRichTextBoxEmpty(NotePad) == false)
+            {
+                //saves file then reupdates preview list
+                SaveFile();
+
+                //this call is unnessecary and slow, just add this object singly for now
+                LoadContent();
+
+            }
+        }
+
+            // Handles the migration of Panel Objects into the main textbox editor
         private void MovePreview(RichTextBox rtb)
         {
             string text = GetRichTextBoxContent(rtb);
@@ -281,7 +310,7 @@ namespace NoteApp
         }
         
         
-        /*-------------------------- Load Note Previews Feature------------------------------------------*/
+        /*-------------------------- Loading Notes To Preview Panel From Directory Path------------------------------------------*/
 
         private List<string> LoadList()
         {
@@ -324,13 +353,18 @@ namespace NoteApp
             
             List<RichTextBox> NeedStyleList = WriteContent();
             List<RichTextBox> StyledList = new List<RichTextBox>();
+            List<string> nameList = LoadList();
             foreach(RichTextBox rtb in NeedStyleList)
             {
 
                 Style style = Application.Current.FindResource("PreviewRTB") as Style;
                 rtb.Style = style;
                 this.Select(rtb, 0, int.MaxValue, Colors.WhiteSmoke);
-
+                foreach(string file in nameList)
+                {
+                    //databind the filename to the rich textbox
+                    rtb.DataContext = file;
+                }
                 
                 
                 StyledList.Add(rtb);

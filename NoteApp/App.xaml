@@ -188,7 +188,7 @@
         <Style x:Key="PreviewRTB" TargetType="{x:Type RichTextBox}">
 
             <EventSetter Event="PreviewMouseLeftButtonDown" Handler="PreviewBoxClicked"/>
-            
+            <Setter Property="JournalEntry.Name" Value="{Binding}"/>
             <Setter Property="SelectionBrush" Value="WhiteSmoke"/>
             <Setter Property="SelectionTextBrush" Value="WhiteSmoke"/>
             <Setter Property="Background" Value="Black"/>

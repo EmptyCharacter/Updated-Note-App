@@ -4,7 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NoteApp"
-        
+        <Window.DataContext>
+    <local:MainWindow/>
+    </Window.DataContext>
         mc:Ignorable="d"
         Title="MainWindow" Height="500" Width="700" ResizeMode="CanResizeWithGrip" AllowsTransparency="True" WindowStyle="None" Background="{x:Null}" MouseLeftButtonDown="Drag" >
     <Border CornerRadius="5" Background="Black" BorderBrush="Gray" BorderThickness="0.3">
