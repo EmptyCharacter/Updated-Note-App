@@ -75,6 +75,8 @@ namespace NoteApp
         Timer autoSaveTimer = new Timer();
         private bool AlreadyInitialized = false;
         private string tempString;
+        private string folderPath = "C:\\Users\\kl\\source\\repos\\NoteApp\\TextFiles\\";
+        private string newFileName = $@"{ DateTime.Now.Ticks}.txt";
 
         /*-------------------------- Main ------------------------------------------*/
 
@@ -134,17 +136,7 @@ namespace NoteApp
         private void SaveFile()
         {
 
-            //so this will create a new instance of the file name each time the autosave occurs which is not ideal.
-            //that will lead to the same text instance receiving multiple different file names and files associated with it
-            //this doesnt allow us to compare if the same instance is inside of the hashset becasue it just creates a new one each time
-            //we need to move away from this by setting conditions to check whether or not the note has already been created
-            //if it already has been created then we wont initialize again and we will just use the previous instance to create the file
-            //There is something in this puzzle that i am not paying attention to and is causing thisissue
-            //I tried to implement a bool within the initialize note method that will turn true when that method is run
-            //then placing a check back in the save method but because this method will get called everytime a save is occured, the
-            //bool is always set to true which basicallly negates the entire purpose of that check statement and bool
-            //we need to re-organize the logic in a way to store it in a temporary spot
-            //NoteObject tempNote = InitializeNote();
+            //So if there is already a file associated with this object then save there, otherwise just save to a new file
 
             NotePadObject thisNote = InitializeNote();
             bool isEmpty = (NoteSet.Count == 0);
@@ -157,13 +149,13 @@ namespace NoteApp
             if (NoteSet.Contains(thisNote) && !isEmpty)
             {
                 //retrive existing file path
-                string path1 = "C:\\Users\\kl\\source\\repos\\NoteApp\\TextFiles\\";
+                
                 string path2 = thisNote.GetFileName();
-                string ExistingDocPath = System.IO.Path.Combine(path1, path2);
+                string ExistingDocPath = System.IO.Path.Combine(folderPath, path2);
 
                 //save to file path
                 File.WriteAllText(ExistingDocPath, thisNote.GetStringToSave());
-                List<string> stringList = new List<string>();
+                
                 
 
                 return;
@@ -171,21 +163,15 @@ namespace NoteApp
             else //writes text to a new text file
             {
                 
-                string path3 = "C:\\Users\\kl\\source\\repos\\NoteApp\\TextFiles\\";
-                string path4 = thisNote.GetFileName();
-
-                //Should declare path, but use the myUniqueFileName var as the file to save to...
-                
-                string testDocPath = System.IO.Path.Combine(path3, path4);
+                string testDocPath = System.IO.Path.Combine(folderPath, newFileName);
 
                 //Writes the contents of string to save to docPath
                 File.WriteAllText(testDocPath, thisNote.GetStringToSave());
                 
                 
-                //Create and add note object to hashset 
-                
+                //Create and add note object to hashset  
                 NoteSet.Add(thisNote);
-                Console.WriteLine(NoteSet.Count());
+               
             }
         }
 
@@ -275,6 +261,30 @@ namespace NoteApp
 
         /*---------------------------------- NotePreview Methods ----------------------------------------------------*/
 
+        private string GetRTBFileName()
+        {
+            string currentContents = GetRichTextBoxContent(NotePad);
+            string fileFound = "";
+            Dictionary<string, string> compareThis = FileContentPair();
+            foreach(KeyValuePair<string,string> kvp in compareThis)
+            {
+                if(kvp.Value == currentContents)
+                {
+                    fileFound = kvp.Key;
+                    break;
+                }
+            }
+            return fileFound;
+
+        }
+        
+        private Dictionary<string, string> FileContentPair()
+        {
+            List<string> fileList = LoadList();
+            List<string> contentList = ExtractContent();
+            var dic = fileList.Zip(contentList, (k, v) => new { k, v }).ToDictionary(x => x.k, x => x.v);
+            return dic;
+        }
         
         
         
@@ -301,6 +311,7 @@ namespace NoteApp
             {
                 string filePath = System.IO.Path.Combine(dirPath, file);
                 contentList.Add(File.ReadAllText(filePath));
+
             }
             return contentList;
         }
@@ -391,6 +402,6 @@ namespace NoteApp
             
         }
          
-
+        
     }
 }
