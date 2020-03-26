@@ -39,6 +39,7 @@ namespace NoteApp
         private string folderPath = "C:\\Users\\kl\\source\\repos\\NoteApp\\TextFiles\\";
         private string newFileName = $@"{ DateTime.Now.Ticks}.txt";
         private string addedText;
+        private bool testc;
 
         /*-------------------------- Main ------------------------------------------*/
 
@@ -170,12 +171,13 @@ namespace NoteApp
         private void TextHasChanged(object sender, TextChangedEventArgs e)
         {
             
-            RichTextBox textBox = sender as RichTextBox;
+           /* RichTextBox textBox = sender as RichTextBox;
             if(textBox != null)
             {
                 addedText = GetRichTextBoxContent(textBox);
-            }
-
+            }*/
+            
+            
             timeSinceAutoSave = DateTime.Now;
             Timer autoSaveTimer = new Timer(2000);
             autoSaveTimer.Elapsed += OnAutoSaveTimer;
@@ -183,7 +185,8 @@ namespace NoteApp
             autoSaveTimer.Enabled = true;
             
 
-        }
+
+    }
 
         /*---------------------------------- NotePreview Methods ----------------------------------------------------*/
 
@@ -191,14 +194,29 @@ namespace NoteApp
 
         public void PreviewBoxClicked(object sender, MouseButtonEventArgs e)
         {
+            testc = false;
             var thisBox = sender as RichTextBox;
             //RichTextBox thisBox = (RichTextBox)e.OriginalSource;
             if(IsRichTextBoxEmpty(NotePad) == false)
             {
                 SaveFile();
+                LoadContent();
             }
+            MovePreview(thisBox);
             
-            NotePad = thisBox;
+        }
+
+        private void MovePreview(RichTextBox rtb)
+        {
+            string text = GetRichTextBoxContent(rtb);
+
+            NotePad.Document.Blocks.Clear();
+            NotePad.Document.Blocks.Add(new Paragraph(new Run(text.Trim())));
+            this.Select(NotePad, 0, int.MaxValue, Colors.WhiteSmoke);
+
+
+            StackHere.Children.Remove(rtb);
+
         }
 
         public bool IsRichTextBoxEmpty(RichTextBox rtb)
@@ -211,21 +229,18 @@ namespace NoteApp
         }
         private bool FileExists(RichTextBox rtb)
         {
-            bool found = new bool();  
+            bool found = false;  
             string currentText = GetRichTextBoxContent(rtb);
-            string temp = currentText + addedText;
+            string temp = currentText;
             Dictionary<string, string> compareThis = FileContentPair();
             foreach (KeyValuePair<string, string> kvp in compareThis)
             {
-                if (kvp.Value == temp)
+                if (kvp.Value.Trim() == temp.Trim())
                 {
                     found = true;
                     break;
                 }
-                else
-                {
-                    found = false;
-                }
+                
             }
             return found;
         }
@@ -239,7 +254,7 @@ namespace NoteApp
             Dictionary<string, string> compareThis = FileContentPair();
             foreach(KeyValuePair<string,string> kvp in compareThis)
             {
-                if(kvp.Value == currentContents)
+                if(kvp.Value.Trim() == currentContents.Trim())
                 {
                     fileFound = kvp.Key;
                     break;
