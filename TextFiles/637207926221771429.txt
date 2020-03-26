@@ -1,0 +1,7 @@
+
+adding a new text pad whatever entry here to test the save method out joo adding some more text just save it thank o hopefully it saves to the same file it didnt... but now it did.. well it only doesnt save to the same file once then it seems to save from the same file.
+THe only issue is if i delete text or hit return, it cant find this file because its comparing a trimmed string.. like just now it couldnt find the file due to the return being hit so it just created a new file. this also needs a solution for deleting entire blocks of text
+
+
+
+

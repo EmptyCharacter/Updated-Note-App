@@ -103,7 +103,7 @@ namespace NoteApp
             //this statement should check an a file associated with the given object is already in the directory
             //if this is true then it will overwrite the contents of that file,
 
-            if (FileExists(NotePad) == true)
+            if (FileExists(NotePad) == true && testc == false) 
             {
                 //retrive existing file path
 
@@ -171,18 +171,23 @@ namespace NoteApp
         private void TextHasChanged(object sender, TextChangedEventArgs e)
         {
             
-           /* RichTextBox textBox = sender as RichTextBox;
-            if(textBox != null)
+           
+            
+            
+            if(testc == false)
             {
-                addedText = GetRichTextBoxContent(textBox);
-            }*/
+                RichTextBox textBox = sender as RichTextBox;
+                if (textBox != null)
+                {
+                    addedText = GetRichTextBoxContent(textBox);
+                }
+                timeSinceAutoSave = DateTime.Now;
+                Timer autoSaveTimer = new Timer(2000);
+                autoSaveTimer.Elapsed += OnAutoSaveTimer;
+                autoSaveTimer.AutoReset = false;
+                autoSaveTimer.Enabled = true;
+            }
             
-            
-            timeSinceAutoSave = DateTime.Now;
-            Timer autoSaveTimer = new Timer(2000);
-            autoSaveTimer.Elapsed += OnAutoSaveTimer;
-            autoSaveTimer.AutoReset = false;
-            autoSaveTimer.Enabled = true;
             
 
 
@@ -194,16 +199,19 @@ namespace NoteApp
 
         public void PreviewBoxClicked(object sender, MouseButtonEventArgs e)
         {
-            testc = false;
+            testc = true;
             var thisBox = sender as RichTextBox;
             //RichTextBox thisBox = (RichTextBox)e.OriginalSource;
             if(IsRichTextBoxEmpty(NotePad) == false)
             {
                 SaveFile();
+                
                 LoadContent();
+                
             }
-            MovePreview(thisBox);
             
+            MovePreview(thisBox);
+            testc = false;
         }
 
         private void MovePreview(RichTextBox rtb)
@@ -211,7 +219,7 @@ namespace NoteApp
             string text = GetRichTextBoxContent(rtb);
 
             NotePad.Document.Blocks.Clear();
-            NotePad.Document.Blocks.Add(new Paragraph(new Run(text.Trim())));
+            NotePad.Document.Blocks.Add(new Paragraph(new Run(text)));
             this.Select(NotePad, 0, int.MaxValue, Colors.WhiteSmoke);
 
 
@@ -231,7 +239,7 @@ namespace NoteApp
         {
             bool found = false;  
             string currentText = GetRichTextBoxContent(rtb);
-            string temp = currentText;
+            string temp = currentText + addedText;
             Dictionary<string, string> compareThis = FileContentPair();
             foreach (KeyValuePair<string, string> kvp in compareThis)
             {
