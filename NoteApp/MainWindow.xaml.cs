@@ -18,6 +18,7 @@ using System.IO;
 using System.Xaml;
 
 
+
 namespace NoteApp
 {
     /// <summary>
@@ -34,7 +35,7 @@ namespace NoteApp
         private DateTime timeSinceAutoSave;
         Timer autoSaveTimer = new Timer();
         
-        private string tempString;
+        
         private string folderPath = "C:\\Users\\kl\\source\\repos\\NoteApp\\TextFiles\\";
         private string newFileName = $@"{ DateTime.Now.Ticks}.txt";
         private string addedText;
@@ -168,6 +169,7 @@ namespace NoteApp
 
         private void TextHasChanged(object sender, TextChangedEventArgs e)
         {
+            
             RichTextBox textBox = sender as RichTextBox;
             if(textBox != null)
             {
@@ -184,6 +186,29 @@ namespace NoteApp
         }
 
         /*---------------------------------- NotePreview Methods ----------------------------------------------------*/
+
+        
+
+        public void PreviewBoxClicked(object sender, MouseButtonEventArgs e)
+        {
+            var thisBox = sender as RichTextBox;
+            //RichTextBox thisBox = (RichTextBox)e.OriginalSource;
+            if(IsRichTextBoxEmpty(NotePad) == false)
+            {
+                SaveFile();
+            }
+            
+            NotePad = thisBox;
+        }
+
+        public bool IsRichTextBoxEmpty(RichTextBox rtb)
+        {
+            
+            if (rtb.Document.Blocks.Count == 0) return true;
+            TextPointer startPointer = rtb.Document.ContentStart.GetNextInsertionPosition(LogicalDirection.Forward);
+            TextPointer endPointer = rtb.Document.ContentEnd.GetNextInsertionPosition(LogicalDirection.Backward);
+            return startPointer.CompareTo(endPointer) == 0;
+        }
         private bool FileExists(RichTextBox rtb)
         {
             bool found = new bool();  
@@ -192,9 +217,10 @@ namespace NoteApp
             Dictionary<string, string> compareThis = FileContentPair();
             foreach (KeyValuePair<string, string> kvp in compareThis)
             {
-                if (kvp.Value == currentText)
+                if (kvp.Value == temp)
                 {
                     found = true;
+                    break;
                 }
                 else
                 {
@@ -203,10 +229,7 @@ namespace NoteApp
             }
             return found;
         }
-        private void AppendNewText(string l)
-        {
-
-        }
+        
 
         private string GetRTBFileName(RichTextBox rtb)
         {
@@ -235,10 +258,6 @@ namespace NoteApp
         }
         
         
-        
-
-
-
         /*-------------------------- Load Note Previews Feature------------------------------------------*/
 
         private List<string> LoadList()
@@ -288,6 +307,7 @@ namespace NoteApp
                 Style style = Application.Current.FindResource("PreviewRTB") as Style;
                 rtb.Style = style;
                 this.Select(rtb, 0, int.MaxValue, Colors.WhiteSmoke);
+
                 
                 
                 StyledList.Add(rtb);
@@ -345,11 +365,6 @@ namespace NoteApp
             return rtb.Selection.Text;
         }
 
-        public void testmethod()
-        {
-            
-        }
-         
         
     }
 }

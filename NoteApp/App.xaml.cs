@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 
 namespace NoteApp
 {
@@ -13,6 +14,11 @@ namespace NoteApp
     /// </summary>
     public partial class App : Application
     {
-       
+        private void PreviewBoxClicked(object sender, MouseButtonEventArgs e)
+        {
+            MainWindow window = (MainWindow)Application.Current.MainWindow;
+            window.PreviewBoxClicked(sender, e);
+            //throw new NotImplementedException();
+        }
     }
 }

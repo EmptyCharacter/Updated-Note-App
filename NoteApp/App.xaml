@@ -182,10 +182,12 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+
         
 
-
         <Style x:Key="PreviewRTB" TargetType="{x:Type RichTextBox}">
+
+            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="PreviewBoxClicked"/>
             
             <Setter Property="SelectionBrush" Value="WhiteSmoke"/>
             <Setter Property="SelectionTextBrush" Value="WhiteSmoke"/>
@@ -194,13 +196,12 @@
             <Setter Property="BorderThickness" Value="0.3"/>
             <Setter Property="OpacityMask" Value="{x:Null}" />
             <Setter Property="AcceptsReturn" Value="True"/>
-            <Setter Property="IsReadOnly" Value="True"/>
-            <Setter Property="IsDocumentEnabled" Value="False"/>
+            <Setter Property="IsReadOnly" Value="False"/>
+            <Setter Property="IsDocumentEnabled" Value="True"/>
             
             <Setter Property="CaretBrush" Value="{x:Null}"/>
             <Setter Property="Height" Value="100"/>
-            <Setter Property="Width" Value="{Binding Path=ActualWidth, ElementName=RTBContainer, Mode=OneWay}"/>
-
+            
         </Style>
         
 
@@ -209,4 +210,7 @@
         
         
     </Application.Resources>
+
+   
 </Application>
+    
