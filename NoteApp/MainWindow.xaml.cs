@@ -114,6 +114,15 @@ namespace NoteApp
             this.Height = SystemParameters.WorkArea.Height;
         }
 
+        
+
+
+
+
+
+
+
+
         /*--------------------------Auto Save Feature------------------------------------------*/
         private void SaveFile()
         {
@@ -190,7 +199,7 @@ namespace NoteApp
         private void TextHasChanged(object sender, TextChangedEventArgs e)
         {
 
-            //only want to execute this if the preview event has been fired
+            //only want to execute this if the preview event has not been fired
             //other wise just use the timer normally
             RichTextBox textBox = sender as RichTextBox;
             if (textBox != null)
@@ -217,7 +226,6 @@ namespace NoteApp
 
         /*---------------------------------- Methods To View Preview Panel Notes ----------------------------------------------------*/
 
-        // Method should fire when the user clicks on a Panel Object
         public void PreviewBoxClicked(object sender, MouseButtonEventArgs e)
         {
             testc = true;
@@ -242,7 +250,6 @@ namespace NoteApp
             }
         }
 
-            // Handles the migration of Panel Objects into the main textbox editor
         private void MovePreview(RichTextBox rtb)
         {
             string text = GetRichTextBoxContent(rtb);
