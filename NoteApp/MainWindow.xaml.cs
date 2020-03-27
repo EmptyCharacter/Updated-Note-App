@@ -16,8 +16,7 @@ using System.Timers;
 using Microsoft.Win32;
 using System.IO;
 using System.Xaml;
-
-
+using System.ComponentModel;
 
 namespace NoteApp
 {
@@ -28,37 +27,37 @@ namespace NoteApp
 
     public partial class Note 
     {
-        private string str;
+        private string fileName;
         private RichTextBox rtb;
-        private string thisStr;
-        public Note(string file, RichTextBox richTextBox)
+        
+        public Note()
         {
-            str = file;
-            rtb = richTextBox;
-            
+           
         }
 
-        public RichTextBox GetNoteRTBName()
+
+        public string FileName
         {
-            return rtb;
-        }
-        public string GetNoteFileName()
-        {
-            return str;
-            
+            get{ return fileName; }
+            set
+            {
+
+                fileName = value;
+                OnPropertyChanged();
+            }
         }
 
-       
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        public void SetRichTextBoxName(RichTextBox thisBox)
+        private void OnPropertyChanged(string info)
         {
-            rtb = thisBox;
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if(handler!=null)
+            {
+                handler(this, new PropertyChangedEventArgs(info));
+            }
         }
-        public void SetNoteFileName(string thisFile)
-        {
-            str = thisFile;
-        }
-    
+
      
     }
 
@@ -76,9 +75,8 @@ namespace NoteApp
         
         
         private string folderPath = "C:\\Users\\kl\\source\\repos\\NoteApp\\TextFiles\\";
-        private string createFilePath = $@"{ DateTime.Now.Ticks}.rtf";
-        private string addedText;
-        private bool testc;
+        private string createFilePath = $@"{ DateTime.Now.Ticks}.xaml";
+       
 
         /*-------------------------- Main ------------------------------------------*/
 
@@ -139,32 +137,21 @@ namespace NoteApp
         private void SaveFile()
         {
 
+            SaveXamlPackage(createFilePath);
+
+
            
-            //this statement should check an a file associated with the given object is already in the directory
-            //if this is true then it will overwrite the contents of that file,
-
-            if (FileExists(NotePad) == true) 
-            {
-                //retrive existing file path
-
-                string filePath = GetRTBFileName(NotePad);
-                string existingFullPath = System.IO.Path.Combine(folderPath, filePath);
-
-                //save to file path
-                File.WriteAllText(existingFullPath, GetRichTextBoxContent(NotePad));
-
-            }
-            else //writes text to a new text file
-            {
-
-                string newFullPath = System.IO.Path.Combine(folderPath, createFilePath);
-
-                //Writes the contents of string to save to docPath
-                File.WriteAllText(newFullPath, GetRichTextBoxContent(NotePad));
-
-            }
         }
 
+        private void SaveXamlPackage(string _fileName)
+        {
+            TextRange range;
+            FileStream fStream;
+            range = new TextRange(NotePad.Document.ContentStart, NotePad.Document.ContentEnd);
+            fStream = new FileStream(_fileName, FileMode.Create);
+            range.Save(fStream, DataFormats.XamlPackage);
+            fStream.Close();
+        }
         private string GetRichTextBoxContent(RichTextBox rtb)
         {
 
@@ -211,17 +198,6 @@ namespace NoteApp
         private void TextHasChanged(object sender, TextChangedEventArgs e)
         {
 
-            //only want to execute this if the preview event has not been fired
-            //other wise just use the timer normally
-            RichTextBox textBox = sender as RichTextBox;
-            if (textBox != null)
-            {
-                addedText = GetRichTextBoxContent(textBox);
-            }
-
-
-            if (testc == false)
-            {
                 //this timer should be reset if the user is still typing
                 //to prevent excess calls to methods
                 timeSinceAutoSave = DateTime.Now;
@@ -229,24 +205,41 @@ namespace NoteApp
                 autoSaveTimer.Elapsed += OnAutoSaveTimer;
                 autoSaveTimer.AutoReset = false;
                 autoSaveTimer.Enabled = true;
-            }
             
             
-
 
     }
+
+        /*---------------------------------- Databind shit ----------------------------------------------------*/
+
+        //create a method that will databind the fileName associated with the given RTB
+        //should return that as a list
+        public List<RichTextBox> BindHere()
+        {
+            List<string> fileList = LoadFilesToList();
+            List<RichTextBox> boxList = StyleContent();
+            List<RichTextBox> bindedList = new List<RichTextBox>();
+            foreach (string name in fileList)
+            {
+                foreach(RichTextBox box in boxList)
+                {
+                    box.Name = name;
+                    bindedList.Add(box);
+                }
+                
+            }
+            return bindedList;
+        }
+
+
 
         /*---------------------------------- Methods To View Preview Panel Notes ----------------------------------------------------*/
 
         public void PreviewBoxClicked(object sender, MouseButtonEventArgs e)
         {
-            testc = true;
-            var thisBox = sender as RichTextBox;
-            //first check if notepad needs to be saved before continuing with swap
-            //PreventDataLoss();
             
-            MovePreview(thisBox);
-            testc = false;
+            var thisBox = sender as RichTextBox;
+            
         }
 
         private void PreventDataLoss()
@@ -262,22 +255,6 @@ namespace NoteApp
             }
         }
 
-        private void MovePreview(RichTextBox rtb)
-        {
-            NotePad.Document.Blocks.Clear();
-            string text = GetRichTextBoxContent(rtb);
-
-            NotePad.Document.Blocks.Add(new Paragraph(new Run(text)));
-            this.Select(NotePad, 0, int.MaxValue, Colors.WhiteSmoke);
-
-            if(FileExists(rtb) == true)
-            {
-                StackHere.Children.Remove(rtb);
-            }
-            
-
-        }
-
         public bool IsRichTextBoxEmpty(RichTextBox rtb)
         {
             
@@ -286,103 +263,47 @@ namespace NoteApp
             TextPointer endPointer = rtb.Document.ContentEnd.GetNextInsertionPosition(LogicalDirection.Backward);
             return startPointer.CompareTo(endPointer) == 0;
         }
-        private bool FileExists(RichTextBox rtb)
-        {
-            bool found = false;  
-            string currentText = GetRichTextBoxContent(rtb);
-            string temp = currentText;
-            temp = temp.Replace("\r\n", string.Empty);
-            Dictionary<string, string> compareThis = FileContentPair();
-            foreach (KeyValuePair<string, string> kvp in compareThis)
-            {
-                Console.WriteLine(kvp.Value);
-                if (kvp.Value.Replace("\r\n", string.Empty) == temp)
-                {
-                    
-                    found = true;
-                    break;
-                }
-                
-            }
-            return found;
-        }
         
 
-        private string GetRTBFileName(RichTextBox rtb)
-        {
-            string currentContents = GetRichTextBoxContent(rtb);
-            currentContents.Replace("\r\n", string.Empty);
-            string fileFound = "";
-            Dictionary<string, string> compareThis = FileContentPair();
-            foreach(KeyValuePair<string,string> kvp in compareThis)
-            {
-                if(kvp.Value.Replace("\r\n", string.Empty) == currentContents)
-                {
-                    fileFound = kvp.Key;
-                    break;
-                }
-            }
-            return fileFound;
-
-        }
-        
-        private Dictionary<string, string> FileContentPair()
-        {
-            List<string> fileList = LoadList();
-            List<string> contentList = ExtractContent();
-            var dic = fileList.Zip(contentList, (k, v) => new { k, v }).ToDictionary(x => x.k, x => x.v);
-            return dic;
-        }
-        
         
         /*-------------------------- Loading Notes To Preview Panel From Directory Path------------------------------------------*/
 
-        private List<Note> LoadFilesToList()
+        
+        private List<string> LoadFilesToList()
         {
-            List<string> thisList = Directory.EnumerateFiles(folderPath, "*.rtf").ToList();
-            List<Note> filesAdded = new List<Note>();
+            List<string> thisList = Directory.EnumerateFiles(folderPath, "*.xaml").ToList();
+            List<string> filesAdded = new List<string>();
             foreach(string s in thisList)
             {
-                Note note = new Note(s, null);
-                filesAdded.Add(note);
-            }
+                filesAdded.Add(s);   
+            } 
             filesAdded.Reverse();
             return filesAdded;
         }
 
-        private List<string> ExtractTextFromFiles()
-        {
-            List<Note> fileList = LoadFilesToList();
-            List<string> contentList = new List<string>();
-            foreach(Note n in fileList)
-            {
-                
-                string filePath = System.IO.Path.Combine(folderPath, n.GetNoteFileName());
-                contentList.Add(File.ReadAllText(filePath));
 
-            }
-            return contentList;
-        }
-
-        private List<RichTextBox> WriteTextToRTB()
+        private List<RichTextBox> LoadXamlToRTB()
         {
-            List<string> contentToWrite = ExtractTextFromFiles();
+            TextRange range;
+            FileStream fStream;
+            List<string> fileNames = LoadFilesToList();
             List<RichTextBox> textAdded = new List<RichTextBox>();
 
-            foreach(string text in contentToWrite)
+            foreach(string text in fileNames)
             {
-                FlowDocument flowDoc = new FlowDocument(new Paragraph(new Run(text)));
-                RichTextBox rtb = new RichTextBox(flowDoc);
+                RichTextBox rtb = new RichTextBox();
+                range = new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd);
+                fStream = new FileStream(text, FileMode.OpenOrCreate);
+                range.Load(fStream, DataFormats.XamlPackage);
                 textAdded.Add(rtb);
             }
-            textAdded.Reverse();
             return textAdded;
         }
 
         private List<RichTextBox> StyleContent()
         {
             
-            List<RichTextBox> addStyle = WriteTextToRTB();
+            List<RichTextBox> addStyle = LoadXamlToRTB();
             List<RichTextBox> styleAdded = new List<RichTextBox>();
             foreach(RichTextBox rtb in addStyle)
             {
@@ -390,15 +311,13 @@ namespace NoteApp
                 Style style = Application.Current.FindResource("PreviewRTB") as Style;
                 rtb.Style = style;
                 this.Select(rtb, 0, int.MaxValue, Colors.WhiteSmoke);
-                
-                
-                styleAdded.Add(rtb);
+                styleAdded.Add(rtb);  
             }
             return styleAdded;
         }
         private void LoadContent()
         {
-            List<RichTextBox> RTBToLoad = StyleContent();
+            List<RichTextBox> RTBToLoad = BindHere();
             foreach(RichTextBox rtb in RTBToLoad)
             {
                 StackHere.Children.Add(rtb);
