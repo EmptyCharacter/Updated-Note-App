@@ -29,17 +29,37 @@ namespace NoteApp
     public partial class Note 
     {
         private string str;
-        public Note(string file)
+        private RichTextBox rtb;
+        private string thisStr;
+        public Note(string file, RichTextBox richTextBox)
         {
             str = file;
+            rtb = richTextBox;
+            
         }
 
-        public string getNoteFileName()
+        public RichTextBox GetNoteRTBName()
+        {
+            return rtb;
+        }
+        public string GetNoteFileName()
         {
             return str;
+            
+        }
+
+       
+
+        public void SetRichTextBoxName(RichTextBox thisBox)
+        {
+            rtb = thisBox;
+        }
+        public void SetNoteFileName(string thisFile)
+        {
+            str = thisFile;
         }
     
-    
+     
     }
 
         
@@ -56,7 +76,7 @@ namespace NoteApp
         
         
         private string folderPath = "C:\\Users\\kl\\source\\repos\\NoteApp\\TextFiles\\";
-        private string createFilePath = $@"{ DateTime.Now.Ticks}.txt";
+        private string createFilePath = $@"{ DateTime.Now.Ticks}.rtf";
         private string addedText;
         private bool testc;
 
@@ -115,14 +135,6 @@ namespace NoteApp
         }
 
         
-
-
-
-
-
-
-
-
         /*--------------------------Auto Save Feature------------------------------------------*/
         private void SaveFile()
         {
@@ -131,7 +143,7 @@ namespace NoteApp
             //this statement should check an a file associated with the given object is already in the directory
             //if this is true then it will overwrite the contents of that file,
 
-            if (FileExists(NotePad) == true && testc == false) 
+            if (FileExists(NotePad) == true) 
             {
                 //retrive existing file path
 
@@ -231,7 +243,7 @@ namespace NoteApp
             testc = true;
             var thisBox = sender as RichTextBox;
             //first check if notepad needs to be saved before continuing with swap
-            PreventDataLoss();
+            //PreventDataLoss();
             
             MovePreview(thisBox);
             testc = false;
@@ -252,14 +264,17 @@ namespace NoteApp
 
         private void MovePreview(RichTextBox rtb)
         {
+            NotePad.Document.Blocks.Clear();
             string text = GetRichTextBoxContent(rtb);
 
-            NotePad.Document.Blocks.Clear();
             NotePad.Document.Blocks.Add(new Paragraph(new Run(text)));
             this.Select(NotePad, 0, int.MaxValue, Colors.WhiteSmoke);
 
-
-            StackHere.Children.Remove(rtb);
+            if(FileExists(rtb) == true)
+            {
+                StackHere.Children.Remove(rtb);
+            }
+            
 
         }
 
@@ -275,12 +290,15 @@ namespace NoteApp
         {
             bool found = false;  
             string currentText = GetRichTextBoxContent(rtb);
-            string temp = currentText + addedText;
+            string temp = currentText;
+            temp = temp.Replace("\r\n", string.Empty);
             Dictionary<string, string> compareThis = FileContentPair();
             foreach (KeyValuePair<string, string> kvp in compareThis)
             {
-                if (kvp.Value.Trim() == temp.Trim())
+                Console.WriteLine(kvp.Value);
+                if (kvp.Value.Replace("\r\n", string.Empty) == temp)
                 {
+                    
                     found = true;
                     break;
                 }
@@ -293,12 +311,12 @@ namespace NoteApp
         private string GetRTBFileName(RichTextBox rtb)
         {
             string currentContents = GetRichTextBoxContent(rtb);
-
+            currentContents.Replace("\r\n", string.Empty);
             string fileFound = "";
             Dictionary<string, string> compareThis = FileContentPair();
             foreach(KeyValuePair<string,string> kvp in compareThis)
             {
-                if(kvp.Value.Trim() == currentContents.Trim())
+                if(kvp.Value.Replace("\r\n", string.Empty) == currentContents)
                 {
                     fileFound = kvp.Key;
                     break;
@@ -319,64 +337,64 @@ namespace NoteApp
         
         /*-------------------------- Loading Notes To Preview Panel From Directory Path------------------------------------------*/
 
-        private List<string> LoadList()
+        private List<Note> LoadFilesToList()
         {
-            string dirPath = "C:\\Users\\kl\\source\\repos\\NoteApp\\TextFiles\\";
-            List<string> fileList = Directory.EnumerateFiles(dirPath, "*.txt").ToList();
-            fileList.Reverse();
-            return fileList;
+            List<string> thisList = Directory.EnumerateFiles(folderPath, "*.rtf").ToList();
+            List<Note> filesAdded = new List<Note>();
+            foreach(string s in thisList)
+            {
+                Note note = new Note(s, null);
+                filesAdded.Add(note);
+            }
+            filesAdded.Reverse();
+            return filesAdded;
         }
 
-        private List<string> ExtractContent()
+        private List<string> ExtractTextFromFiles()
         {
-            
-            string dirPath = "C:\\Users\\kl\\source\\repos\\NoteApp\\TextFiles\\";
-            List<string> fileList = LoadList();
+            List<Note> fileList = LoadFilesToList();
             List<string> contentList = new List<string>();
-            foreach(string file in fileList)
+            foreach(Note n in fileList)
             {
-                string filePath = System.IO.Path.Combine(dirPath, file);
+                
+                string filePath = System.IO.Path.Combine(folderPath, n.GetNoteFileName());
                 contentList.Add(File.ReadAllText(filePath));
 
             }
             return contentList;
         }
 
-        private List<RichTextBox> WriteContent()
+        private List<RichTextBox> WriteTextToRTB()
         {
-            List<string> contentToWrite = ExtractContent();
-            List<RichTextBox> RTBList = new List<RichTextBox>();
-            foreach(string str in contentToWrite)
+            List<string> contentToWrite = ExtractTextFromFiles();
+            List<RichTextBox> textAdded = new List<RichTextBox>();
+
+            foreach(string text in contentToWrite)
             {
-                FlowDocument flowDoc = new FlowDocument(new Paragraph(new Run(str)));
+                FlowDocument flowDoc = new FlowDocument(new Paragraph(new Run(text)));
                 RichTextBox rtb = new RichTextBox(flowDoc);
-                RTBList.Add(rtb);
+                textAdded.Add(rtb);
             }
-            return RTBList;
+            textAdded.Reverse();
+            return textAdded;
         }
 
         private List<RichTextBox> StyleContent()
         {
             
-            List<RichTextBox> NeedStyleList = WriteContent();
-            List<RichTextBox> StyledList = new List<RichTextBox>();
-            List<string> nameList = LoadList();
-            foreach(RichTextBox rtb in NeedStyleList)
+            List<RichTextBox> addStyle = WriteTextToRTB();
+            List<RichTextBox> styleAdded = new List<RichTextBox>();
+            foreach(RichTextBox rtb in addStyle)
             {
 
                 Style style = Application.Current.FindResource("PreviewRTB") as Style;
                 rtb.Style = style;
                 this.Select(rtb, 0, int.MaxValue, Colors.WhiteSmoke);
-                foreach(string file in nameList)
-                {
-                    //databind the filename to the rich textbox
-                    rtb.DataContext = file;
-                }
                 
                 
-                StyledList.Add(rtb);
+                styleAdded.Add(rtb);
             }
-            return StyledList;
+            return styleAdded;
         }
         private void LoadContent()
         {
