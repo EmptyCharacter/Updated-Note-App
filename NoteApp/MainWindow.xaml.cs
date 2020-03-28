@@ -18,6 +18,8 @@ using System.IO;
 using System.Xaml;
 using System.ComponentModel;
 using System.Windows.Threading;
+using Path = System.IO.Path;
+using System.Text.RegularExpressions;
 
 namespace NoteApp
 {
@@ -108,10 +110,10 @@ namespace NoteApp
         private void SaveFile()
         {
 
-            SaveXamlPackage(thisRTB, createFilePath);
+            SaveXamlPackage(createFilePath);
             /*if (FindName(yes) == thisRTB)
             {
-                SaveXamlPackage(thisRTB, createFilePath);
+                SaveXamlPackage(yes, createFilePath);
                 
             }
             else
@@ -122,14 +124,19 @@ namespace NoteApp
         }
 
 
-        private void SaveXamlPackage(RichTextBox rtb, string _fileName)
+        private void SaveXamlPackage(string _fileName)
         {
-            TextRange range;
-            FileStream fStream;
-            range = new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd);
-            fStream = new FileStream(_fileName, FileMode.Create);
-            range.Save(fStream, DataFormats.XamlPackage);
-            fStream.Close();
+            this.Dispatcher.Invoke(() =>
+            {
+                string fullPath = Path.Combine(folderPath, _fileName);
+                TextRange range;
+                FileStream fStream;
+                range = new TextRange(yes.Document.ContentStart, yes.Document.ContentEnd);
+                fStream = new FileStream(fullPath, FileMode.Create);
+                range.Save(fStream, DataFormats.XamlPackage);
+                fStream.Close();
+            });
+           
         }
         
 
@@ -144,8 +151,7 @@ namespace NoteApp
             
             if (test > autoSaveInterval)
             {
-                this.Dispatcher.Invoke(DispatcherPriority.Normal,
-                new  DispatcherPriority());
+               
                 SaveFile();
                 autoSaveTimer.Enabled = false;
                 timeSinceAutoSave = DateTime.Now;
@@ -183,7 +189,10 @@ namespace NoteApp
             {
                 foreach(RichTextBox box in boxList)
                 {
-                    box.Name = name;
+                    string newName = Path.GetFileName(name);
+                    string validName = "A" + newName;
+                    validName = Regex.Replace(validName, @".", "_");
+                    box.Name = validName;
                     this.RegisterName(box.Name, box);
                     bindedList.Add(box);
                 }
