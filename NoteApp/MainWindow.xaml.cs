@@ -17,6 +17,7 @@ using Microsoft.Win32;
 using System.IO;
 using System.Xaml;
 using System.ComponentModel;
+using System.Windows.Threading;
 
 namespace NoteApp
 {
@@ -25,41 +26,7 @@ namespace NoteApp
     /// </summary>
 
 
-    public partial class Note 
-    {
-        private string fileName;
-        private RichTextBox rtb;
-        
-        public Note()
-        {
-           
-        }
-
-
-        public string FileName
-        {
-            get{ return fileName; }
-            set
-            {
-
-                fileName = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged(string info)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if(handler!=null)
-            {
-                handler(this, new PropertyChangedEventArgs(info));
-            }
-        }
-
-     
-    }
+   
 
         
 
@@ -76,6 +43,7 @@ namespace NoteApp
         
         private string folderPath = "C:\\Users\\kl\\source\\repos\\NoteApp\\TextFiles\\";
         private string createFilePath = $@"{ DateTime.Now.Ticks}.xaml";
+        private RichTextBox thisRTB;
        
 
         /*-------------------------- Main ------------------------------------------*/
@@ -132,48 +100,43 @@ namespace NoteApp
             this.Height = SystemParameters.WorkArea.Height;
         }
 
+
+        //just had idea for the panel click function
+        /* so if we have note */
         
         /*--------------------------Auto Save Feature------------------------------------------*/
         private void SaveFile()
         {
 
-            SaveXamlPackage(createFilePath);
-
-
-           
+            SaveXamlPackage(thisRTB, createFilePath);
+            /*if (FindName(yes) == thisRTB)
+            {
+                SaveXamlPackage(thisRTB, createFilePath);
+                
+            }
+            else
+            {
+                SaveXamlPackage(thisRTB, thisRTB.Name);
+            }*/
+            
         }
 
-        private void SaveXamlPackage(string _fileName)
+
+        private void SaveXamlPackage(RichTextBox rtb, string _fileName)
         {
             TextRange range;
             FileStream fStream;
-            range = new TextRange(NotePad.Document.ContentStart, NotePad.Document.ContentEnd);
+            range = new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd);
             fStream = new FileStream(_fileName, FileMode.Create);
             range.Save(fStream, DataFormats.XamlPackage);
             fStream.Close();
         }
-        private string GetRichTextBoxContent(RichTextBox rtb)
-        {
-
-            //RichTextBox myRichTextBox = new RichTextBox();
-
-
-            // FlowDocument myFlowDoc = new FlowDocument();
-
-            //myRichTextBox.Document = myFlowDoc;
-
-            
-            TextRange textRange = new TextRange(
-                    rtb.Document.ContentStart,
-                    rtb.Document.ContentEnd
-                );
-            
-            return textRange.Text;
-        }
+        
 
         
         private void OnAutoSaveTimer(object sender, ElapsedEventArgs e)
         {
+            
             double autoSaveInterval = 2;
             
             double test = ((e.SignalTime - timeSinceAutoSave).TotalSeconds);
@@ -181,12 +144,8 @@ namespace NoteApp
             
             if (test > autoSaveInterval)
             {
-                
-                //gets the text from richtextbox
-
-                //set time since autosave to the date time now
-                Console.WriteLine("it works!");
-                
+                this.Dispatcher.Invoke(DispatcherPriority.Normal,
+                new  DispatcherPriority());
                 SaveFile();
                 autoSaveTimer.Enabled = false;
                 timeSinceAutoSave = DateTime.Now;
@@ -196,8 +155,8 @@ namespace NoteApp
 
 
         private void TextHasChanged(object sender, TextChangedEventArgs e)
-        {
-
+        { 
+                thisRTB = sender as RichTextBox;
                 //this timer should be reset if the user is still typing
                 //to prevent excess calls to methods
                 timeSinceAutoSave = DateTime.Now;
@@ -205,6 +164,7 @@ namespace NoteApp
                 autoSaveTimer.Elapsed += OnAutoSaveTimer;
                 autoSaveTimer.AutoReset = false;
                 autoSaveTimer.Enabled = true;
+           
             
             
 
@@ -224,6 +184,7 @@ namespace NoteApp
                 foreach(RichTextBox box in boxList)
                 {
                     box.Name = name;
+                    this.RegisterName(box.Name, box);
                     bindedList.Add(box);
                 }
                 
@@ -242,28 +203,6 @@ namespace NoteApp
             
         }
 
-        private void PreventDataLoss()
-        {
-            if (IsRichTextBoxEmpty(NotePad) == false)
-            {
-                //saves file then reupdates preview list
-                SaveFile();
-
-                //this call is unnessecary and slow, just add this object singly for now
-                LoadContent();
-
-            }
-        }
-
-        public bool IsRichTextBoxEmpty(RichTextBox rtb)
-        {
-            
-            if (rtb.Document.Blocks.Count == 0) return true;
-            TextPointer startPointer = rtb.Document.ContentStart.GetNextInsertionPosition(LogicalDirection.Forward);
-            TextPointer endPointer = rtb.Document.ContentEnd.GetNextInsertionPosition(LogicalDirection.Backward);
-            return startPointer.CompareTo(endPointer) == 0;
-        }
-        
 
         
         /*-------------------------- Loading Notes To Preview Panel From Directory Path------------------------------------------*/
@@ -317,11 +256,14 @@ namespace NoteApp
         }
         private void LoadContent()
         {
-            List<RichTextBox> RTBToLoad = BindHere();
-            foreach(RichTextBox rtb in RTBToLoad)
+            if(LoadFilesToList().Count != 0)
             {
-                StackHere.Children.Add(rtb);
-                
+                List<RichTextBox> RTBToLoad = BindHere();
+                foreach (RichTextBox rtb in RTBToLoad)
+                {
+                    StackHere.Children.Add(rtb);
+
+                }
             }
         }
 
