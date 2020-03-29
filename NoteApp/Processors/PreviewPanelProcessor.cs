@@ -60,7 +60,7 @@ namespace NoteApp
             fileList = fp.LoadFilesToList();
             if (fileList.Count != 0)
             {
-                List<RichTextBox> RTBToLoad = BindHere(panel);
+                List<RichTextBox> RTBToLoad = BindHere();
                 foreach (RichTextBox rtb in RTBToLoad)
                 {
                     panel.Children.Add(rtb);
@@ -68,28 +68,27 @@ namespace NoteApp
             }
         }
 
-        public List<RichTextBox> BindHere(StackPanel panel)
+        public List<RichTextBox> BindHere()
         {
             List<string> fileList = FormatName();
             List<RichTextBox> boxList = StyleContent();
             List<RichTextBox> bindedList = new List<RichTextBox>();
-            
+            StackPanel stackPanel = new StackPanel();
+            //NameScope.SetNameScope(stackPanel, new NameScope());
             for (var i = 0; i < fileList.Count; i++)
             {
 
                 foreach (RichTextBox box in boxList)
                 {
-
-                    NameScope.SetNameScope(panel, new NameScope());
+                    NameScope.SetNameScope(box, new NameScope());
                     box.Name = fileList[i];
-                    box.RegisterName(box.Name, box);
-                    panel.Children.Add(box);
-                    
+                    box.RegisterName(box.Name, box);    
                     bindedList.Add(box);
                     i++;
 
-                }
 
+                }
+                
             }
 
             return bindedList;
