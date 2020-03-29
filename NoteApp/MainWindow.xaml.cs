@@ -171,9 +171,10 @@ namespace NoteApp
           
             string newName = UnfomatFile(name);
             thisBox = WriteText(thisBox, newName);
-            StackHere.Children.Remove(thisBox);
+            
             Style style = Application.Current.FindResource("Moved") as Style;
             thisBox.Style = style;
+            StackHere.Children.Remove(thisBox);
             DockHere.Children.Add(thisBox);
             
 
@@ -183,9 +184,9 @@ namespace NoteApp
         {
             TextRange range;
             FileStream fStream;
-            MemoryStream mStream;
+
             range = new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd);
-            mStream = new MemoryStream(file, FileMode.OpenOrCreate);
+            fStream = new FileStream(file, FileMode.OpenOrCreate);
             range.Load(fStream, DataFormats.XamlPackage);
             return rtb;
         }
