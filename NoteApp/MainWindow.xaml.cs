@@ -28,9 +28,6 @@ namespace NoteApp
 
 
         /*-------------------------- Variables ------------------------------------------*/
-
-        private PreviewPanelProcessor preview;
-
         private DateTime timeSinceAutoSave;
         Timer autoSaveTimer = new Timer();
         
