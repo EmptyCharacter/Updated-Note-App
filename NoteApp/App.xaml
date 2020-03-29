@@ -188,6 +188,7 @@
         <Style x:Key="PreviewRTB" TargetType="{x:Type RichTextBox}">
 
             <EventSetter Event="PreviewMouseLeftButtonDown" Handler="PreviewBoxClicked"/>
+            <Setter Property="FontFamily" Value="Arial"/>
             <Setter Property="TextElement.DataContext" Value="{Binding}"/>
             <Setter Property="SelectionBrush" Value="WhiteSmoke"/>
             <Setter Property="SelectionTextBrush" Value="WhiteSmoke"/>
@@ -195,7 +196,7 @@
             <Setter Property="BorderBrush" Value="Gray"/>
             <Setter Property="BorderThickness" Value="0.3"/>
             <Setter Property="OpacityMask" Value="{x:Null}" />
-            <Setter Property="AcceptsReturn" Value="True"/>
+            <Setter Property="AcceptsReturn" Value="False"/>
             <Setter Property="IsReadOnly" Value="False"/>
             <Setter Property="IsDocumentEnabled" Value="True"/>
             
@@ -206,6 +207,11 @@
 
         <Style x:Key="ID" TargetType="RichTextBox">
             <Setter Property="Name" Value="{Binding myName}"/>
+        </Style>
+
+        <Style x:Key="Moved" TargetType="{x:Type RichTextBox}">
+            <Setter Property="Background" Value="White"/>
+            
         </Style>
         
 

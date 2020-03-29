@@ -31,6 +31,8 @@ namespace NoteApp
         private DateTime timeSinceAutoSave;
         Timer autoSaveTimer = new Timer();
         
+        private List<string> duhList;
+        
         private string folderPath = "C:\\Users\\kl\\source\\repos\\NoteApp\\TextFiles\\";
         private string createFilePath = $@"{ DateTime.Now.Ticks}.xaml";
         
@@ -43,7 +45,8 @@ namespace NoteApp
             InitializeComponent();
             PreviewPanelProcessor pre = new PreviewPanelProcessor();
             pre.LoadContent(StackHere);
-            
+            FileProcessor fp = new FileProcessor();
+            duhList = fp.LoadFilesToList();
             
         }
 
@@ -163,12 +166,39 @@ namespace NoteApp
         {
             
             var thisBox = sender as RichTextBox;
+            string name = thisBox.Name;
+
+          
+            string newName = UnfomatFile(name);
+            thisBox = WriteText(thisBox, newName);
+            StackHere.Children.Remove(thisBox);
+            Style style = Application.Current.FindResource("Moved") as Style;
+            thisBox.Style = style;
+            DockHere.Children.Add(thisBox);
             
+
+        }
+
+        public RichTextBox WriteText(RichTextBox rtb, string file)
+        {
+            TextRange range;
+            FileStream fStream;
+            MemoryStream mStream;
+            range = new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd);
+            mStream = new MemoryStream(file, FileMode.OpenOrCreate);
+            range.Load(fStream, DataFormats.XamlPackage);
+            return rtb;
+        }
+
+        public string UnfomatFile(string str)
+        {
+            str = str.Replace("_", ".");
+            str = str.Replace("A", "");
+            return str;
         }
 
 
 
-        
 
     }
 }
