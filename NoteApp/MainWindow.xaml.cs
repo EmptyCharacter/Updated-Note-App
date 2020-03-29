@@ -127,8 +127,6 @@ namespace NoteApp
            
         }
         
-
-        
         private void OnAutoSaveTimer(object sender, ElapsedEventArgs e)
         {
             
@@ -147,7 +145,7 @@ namespace NoteApp
             }
         }
 
-
+        /*---------------------------------- Events ----------------------------------------------------*/
         private void TextHasChanged(object sender, TextChangedEventArgs e)
         { 
                 //thisRTB = sender as RichTextBox;
@@ -159,10 +157,7 @@ namespace NoteApp
            
         }
 
-        
-
-
-        /*---------------------------------- Methods To View Preview Panel Notes ----------------------------------------------------*/
+     
 
         public void PreviewBoxClicked(object sender, MouseButtonEventArgs e)
         {
