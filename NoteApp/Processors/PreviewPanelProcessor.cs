@@ -13,8 +13,6 @@ namespace NoteApp
     {
         
         private List<string> fileList;
-        private FileProcessor fp;
-        private PreviewPanelProcessor pre;
         public PreviewPanelProcessor()
         {
 
