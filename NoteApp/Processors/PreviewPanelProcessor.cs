@@ -11,7 +11,7 @@ namespace NoteApp
 {
     public class PreviewPanelProcessor
     {
-        public void RegisterName(string name, object scopedElement);
+        
         private List<string> fileList;
         private FileProcessor fp;
         private PreviewPanelProcessor pre;
@@ -62,7 +62,7 @@ namespace NoteApp
             fileList = fp.LoadFilesToList();
             if (fileList.Count != 0)
             {
-                List<RichTextBox> RTBToLoad = BindHere();
+                List<RichTextBox> RTBToLoad = BindHere(panel);
                 foreach (RichTextBox rtb in RTBToLoad)
                 {
                     panel.Children.Add(rtb);
@@ -70,7 +70,7 @@ namespace NoteApp
             }
         }
 
-        public List<RichTextBox> BindHere()
+        public List<RichTextBox> BindHere(StackPanel panel)
         {
             List<string> fileList = FormatName();
             List<RichTextBox> boxList = StyleContent();
@@ -81,9 +81,12 @@ namespace NoteApp
 
                 foreach (RichTextBox box in boxList)
                 {
-                    
+
+                    NameScope.SetNameScope(panel, new NameScope());
                     box.Name = fileList[i];
-                    this.RegisterName(box.Name, box);
+                    box.RegisterName(box.Name, box);
+                    panel.Children.Add(box);
+                    
                     bindedList.Add(box);
                     i++;
 
