@@ -1,25 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Timers;
 using Microsoft.Win32;
 using System.IO;
-using System.Xaml;
-using System.ComponentModel;
-using System.Windows.Threading;
 using Path = System.IO.Path;
-using System.Text.RegularExpressions;
+
 
 namespace NoteApp
 {
@@ -37,15 +28,15 @@ namespace NoteApp
 
 
         /*-------------------------- Variables ------------------------------------------*/
-
+        private FileProcessor fileProcessor;
+        private PreviewPanelProcessor previewPanelProcessor;
         
         private DateTime timeSinceAutoSave;
         Timer autoSaveTimer = new Timer();
         
-        
         private string folderPath = "C:\\Users\\kl\\source\\repos\\NoteApp\\TextFiles\\";
         private string createFilePath = $@"{ DateTime.Now.Ticks}.xaml";
-        private RichTextBox thisRTB;
+        
        
 
         /*-------------------------- Main ------------------------------------------*/
@@ -53,7 +44,7 @@ namespace NoteApp
         public MainWindow()
         {
             InitializeComponent();
-            LoadContent();
+            previewPanelProcessor.
             
             
         }
@@ -169,50 +160,9 @@ namespace NoteApp
                 autoSaveTimer.AutoReset = false;
                 autoSaveTimer.Enabled = true;
            
-    }
-
-        /*---------------------------------- Databind shit ----------------------------------------------------*/
-
-        //create a method that will databind the fileName associated with the given RTB
-        //should return that as a list
-        public List<RichTextBox> BindHere()
-        {
-            List<string> fileList = FormatName();
-            List<RichTextBox> boxList = StyleContent();
-            List<RichTextBox> bindedList = new List<RichTextBox>();
-        
-            for (var i = 0; i < fileList.Count; i++)
-            {
-                
-                foreach (RichTextBox box in boxList)
-                {
-                    box.Name = fileList[i];
-                    this.RegisterName(box.Name, box);
-                    bindedList.Add(box);
-                    i++;
-                    
-                }
-            
-            }
-        
-            return bindedList;
         }
 
         
-        public List<string> FormatName()
-        {
-            List<string> formatThis = LoadFilesToList();
-            List<string> formattedList = new List<string>();
-            foreach(string name in formatThis)
-            {
-                string newName = Path.GetFileName(name);
-                string validName = "A" + newName;
-                validName = validName.Replace(".", "_");
-                formattedList.Add(validName);
-                
-            }
-            return formattedList;
-        }
 
 
         /*---------------------------------- Methods To View Preview Panel Notes ----------------------------------------------------*/
@@ -225,110 +175,8 @@ namespace NoteApp
         }
 
 
-        
-        /*-------------------------- Loading Notes To Preview Panel From Directory Path------------------------------------------*/
 
-        
-        private List<string> LoadFilesToList()
-        {
-            List<string> thisList = Directory.EnumerateFiles(folderPath, "*.xaml").ToList();
-            List<string> filesAdded = new List<string>();
-            foreach(string s in thisList)
-            {
-                filesAdded.Add(s);   
-            } 
-            filesAdded.Reverse();
-            return filesAdded;
-        }
-
-
-        private List<RichTextBox> LoadXamlToRTB()
-        {
-            TextRange range;
-            FileStream fStream;
-            List<string> fileNames = LoadFilesToList();
-            List<RichTextBox> textAdded = new List<RichTextBox>();
-
-            foreach(string text in fileNames)
-            {
-                RichTextBox rtb = new RichTextBox();
-                range = new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd);
-                fStream = new FileStream(text, FileMode.OpenOrCreate);
-                range.Load(fStream, DataFormats.XamlPackage);
-                textAdded.Add(rtb);
-            }
-            return textAdded;
-        }
-
-        private List<RichTextBox> StyleContent()
-        {
-            
-            List<RichTextBox> addStyle = LoadXamlToRTB();
-            List<RichTextBox> styleAdded = new List<RichTextBox>();
-            foreach(RichTextBox rtb in addStyle)
-            {
-
-                Style style = Application.Current.FindResource("PreviewRTB") as Style;
-                rtb.Style = style;
-                this.Select(rtb, 0, int.MaxValue, Colors.WhiteSmoke);
-                styleAdded.Add(rtb);  
-            }
-            return styleAdded;
-        }
-        private void LoadContent()
-        {
-            if(LoadFilesToList().Count != 0)
-            {
-                List<RichTextBox> RTBToLoad = BindHere();
-                foreach (RichTextBox rtb in RTBToLoad)
-                {
-                    StackHere.Children.Add(rtb);
-
-                }
-            }
-        }
-
-        private static TextPointer GetTextPointAt(TextPointer from, int pos)
-        {
-            TextPointer ret = from;
-            int i = 0;
-
-            while ((i < pos) && (ret != null))
-            {
-                if ((ret.GetPointerContext(LogicalDirection.Backward) == TextPointerContext.Text) || (ret.GetPointerContext(LogicalDirection.Backward) == TextPointerContext.None))
-                    i++;
-
-                if (ret.GetPositionAtOffset(1, LogicalDirection.Forward) == null)
-                    return ret;
-
-                ret = ret.GetPositionAtOffset(1, LogicalDirection.Forward);
-            }
-
-            return ret;
-        }
-
-        internal string Select(RichTextBox rtb, int offset, int length, Color color)
-        {
-            // Get text selection:
-            TextSelection textRange = rtb.Selection;
-
-            // Get text starting point:
-            TextPointer start = rtb.Document.ContentStart;
-
-            // Get begin and end requested:
-            TextPointer startPos = GetTextPointAt(start, offset);
-            TextPointer endPos = GetTextPointAt(start, offset + length);
-
-            // New selection of text:
-            textRange.Select(startPos, endPos);
-            
-            // Apply property to the selection:
-            textRange.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(color));
-
-            // Return selection text:
-            return rtb.Selection.Text;
-        }
-
+      
         
     }
 }
