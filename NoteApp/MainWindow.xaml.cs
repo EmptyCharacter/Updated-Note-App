@@ -163,17 +163,12 @@ namespace NoteApp
         private void TextHasChanged(object sender, TextChangedEventArgs e)
         { 
                 thisRTB = sender as RichTextBox;
-                //this timer should be reset if the user is still typing
-                //to prevent excess calls to methods
                 timeSinceAutoSave = DateTime.Now;
                 Timer autoSaveTimer = new Timer(2000);
                 autoSaveTimer.Elapsed += OnAutoSaveTimer;
                 autoSaveTimer.AutoReset = false;
                 autoSaveTimer.Enabled = true;
            
-            
-            
-
     }
 
         /*---------------------------------- Databind shit ----------------------------------------------------*/
@@ -182,25 +177,42 @@ namespace NoteApp
         //should return that as a list
         public List<RichTextBox> BindHere()
         {
-            List<string> fileList = LoadFilesToList();
+            List<string> fileList = FormatName();
             List<RichTextBox> boxList = StyleContent();
             List<RichTextBox> bindedList = new List<RichTextBox>();
-            foreach (string name in fileList)
+        
+            for (var i = 0; i < fileList.Count; i++)
             {
-                foreach(RichTextBox box in boxList)
+                
+                foreach (RichTextBox box in boxList)
                 {
-                    string newName = Path.GetFileName(name);
-                    string validName = "A" + newName;
-                    validName = Regex.Replace(validName, @".", "_");
-                    box.Name = validName;
+                    box.Name = fileList[i];
                     this.RegisterName(box.Name, box);
                     bindedList.Add(box);
+                    i++;
+                    
                 }
-                
+            
             }
+        
             return bindedList;
         }
 
+        
+        public List<string> FormatName()
+        {
+            List<string> formatThis = LoadFilesToList();
+            List<string> formattedList = new List<string>();
+            foreach(string name in formatThis)
+            {
+                string newName = Path.GetFileName(name);
+                string validName = "A" + newName;
+                validName = validName.Replace(".", "_");
+                formattedList.Add(validName);
+                
+            }
+            return formattedList;
+        }
 
 
         /*---------------------------------- Methods To View Preview Panel Notes ----------------------------------------------------*/
