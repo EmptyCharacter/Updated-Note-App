@@ -1,13 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Windows.Media;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Media;
 using System.Timers;
-using Microsoft.Win32;
+
 using System.IO;
 using Path = System.IO.Path;
 
@@ -170,14 +176,21 @@ namespace NoteApp
 
           
             string newName = UnfomatFile(name);
-            thisBox = WriteText(thisBox, newName);
-            
-            Style style = Application.Current.FindResource("Moved") as Style;
-            thisBox.Style = style;
-            StackHere.Children.Remove(thisBox);
-            DockHere.Children.Add(thisBox);
-            
+            LoadXamlPackage(newName);
 
+        }
+
+        void LoadXamlPackage(string _fileName)
+        {
+            TextRange range;
+            FileStream fStream;
+            if (File.Exists(_fileName))
+            {
+                range = new TextRange(yes.Document.ContentStart, yes.Document.ContentEnd);
+                fStream = new FileStream(_fileName, FileMode.OpenOrCreate);
+                range.Load(fStream, DataFormats.XamlPackage);
+                fStream.Close();
+            }
         }
 
         public RichTextBox WriteText(RichTextBox rtb, string file)
