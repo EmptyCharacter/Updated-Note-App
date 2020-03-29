@@ -28,9 +28,9 @@ namespace NoteApp
 
 
         /*-------------------------- Variables ------------------------------------------*/
-        private FileProcessor fileProcessor;
-        private PreviewPanelProcessor previewPanelProcessor;
-        
+
+        private PreviewPanelProcessor preview;
+
         private DateTime timeSinceAutoSave;
         Timer autoSaveTimer = new Timer();
         
@@ -44,7 +44,8 @@ namespace NoteApp
         public MainWindow()
         {
             InitializeComponent();
-            previewPanelProcessor.
+            PreviewPanelProcessor pre = new PreviewPanelProcessor();
+            pre.LoadContent(StackHere);
             
             
         }
@@ -114,7 +115,6 @@ namespace NoteApp
             
         }
 
-
         private void SaveXamlPackage(string _fileName)
         {
             this.Dispatcher.Invoke(() =>
@@ -153,7 +153,7 @@ namespace NoteApp
 
         private void TextHasChanged(object sender, TextChangedEventArgs e)
         { 
-                thisRTB = sender as RichTextBox;
+                //thisRTB = sender as RichTextBox;
                 timeSinceAutoSave = DateTime.Now;
                 Timer autoSaveTimer = new Timer(2000);
                 autoSaveTimer.Elapsed += OnAutoSaveTimer;
@@ -176,7 +176,7 @@ namespace NoteApp
 
 
 
-      
         
+
     }
 }

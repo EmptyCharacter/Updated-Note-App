@@ -11,16 +11,23 @@ namespace NoteApp
 {
     public class PreviewPanelProcessor
     {
-
+        public void RegisterName(string name, object scopedElement);
+        private List<string> fileList;
+        private FileProcessor fp;
+        private PreviewPanelProcessor pre;
         public PreviewPanelProcessor()
         {
-            
+
+            FileProcessor fileProcessor = new FileProcessor();
+
+            //fileList = fp.LoadFilesToList();
         }
+        
         public List<RichTextBox> LoadXamlToRTB()
         {
             TextRange range;
             FileStream fStream;
-            List<string> fileNames = LoadFilesToList();
+            List<string> fileNames = fileList;
             List<RichTextBox> textAdded = new List<RichTextBox>();
 
             foreach (string text in fileNames)
@@ -49,16 +56,16 @@ namespace NoteApp
             }
             return styleAdded;
         }
-        public void LoadContent(FileProcessor fileProcessor)
+        public void LoadContent(StackPanel panel)
         {
-            
-            if (LoadFilesToList().Count != 0)
+            FileProcessor fp = new FileProcessor();
+            fileList = fp.LoadFilesToList();
+            if (fileList.Count != 0)
             {
                 List<RichTextBox> RTBToLoad = BindHere();
                 foreach (RichTextBox rtb in RTBToLoad)
                 {
-                    StackHere.Children.Add(rtb);
-
+                    panel.Children.Add(rtb);
                 }
             }
         }
@@ -68,12 +75,13 @@ namespace NoteApp
             List<string> fileList = FormatName();
             List<RichTextBox> boxList = StyleContent();
             List<RichTextBox> bindedList = new List<RichTextBox>();
-
+            
             for (var i = 0; i < fileList.Count; i++)
             {
 
                 foreach (RichTextBox box in boxList)
                 {
+                    
                     box.Name = fileList[i];
                     this.RegisterName(box.Name, box);
                     bindedList.Add(box);
@@ -87,9 +95,9 @@ namespace NoteApp
         }
         public List<string> FormatName()
         {
-            List<string> formatThis = LoadFilesToList();
+            List<string> newt = fileList;
             List<string> formattedList = new List<string>();
-            foreach (string name in formatThis)
+            foreach (string name in newt)
             {
                 string newName = Path.GetFileName(name);
                 string validName = "A" + newName;
@@ -101,6 +109,7 @@ namespace NoteApp
         }
 
 
+        /* ---------------------Helper Methods for StyleContent-------------------------------*/
         private static TextPointer GetTextPointAt(TextPointer from, int pos)
         {
             TextPointer ret = from;
