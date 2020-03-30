@@ -20,5 +20,17 @@ namespace NoteApp
             window.PreviewBoxClicked(sender, e);
             //throw new NotImplementedException();
         }
+
+        private void BoxHover(object sender, MouseEventArgs e)
+        {
+            MainWindow window = (MainWindow)Application.Current.MainWindow;
+            window.BoxHover(sender, e);
+        }
+
+        private void BoxUnhover(object sender, MouseEventArgs e)
+        {
+            MainWindow window = (MainWindow)Application.Current.MainWindow;
+            window.BoxUnhover(sender, e);
+        }
     }
 }

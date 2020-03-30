@@ -188,6 +188,8 @@
         <Style x:Key="PreviewRTB" TargetType="{x:Type RichTextBox}">
 
             <EventSetter Event="PreviewMouseLeftButtonDown" Handler="PreviewBoxClicked"/>
+            <EventSetter Event="MouseEnter" Handler="BoxHover"/>
+            <EventSetter Event="MouseLeave" Handler="BoxUnhover"/>
             <Setter Property="FontFamily" Value="Arial"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="FontSize" Value="12"/>
@@ -196,13 +198,13 @@
             <Setter Property="SelectionTextBrush" Value="WhiteSmoke"/>
             <Setter Property="Background" Value="Black"/>
             <Setter Property="BorderBrush" Value="Gray"/>
-            <Setter Property="BorderThickness" Value="0.3"/>
+            <Setter Property="BorderThickness" Value="0.4, 0.4, 0.4,0.4"/>
             <Setter Property="OpacityMask" Value="{x:Null}" />
             
             <Setter Property="IsReadOnly" Value="False"/>
             <Setter Property="IsDocumentEnabled" Value="True"/>
             
-            <Setter Property="CaretBrush" Value="{x:Null}"/>
+
             <Setter Property="Height" Value="100"/>
             
         </Style>

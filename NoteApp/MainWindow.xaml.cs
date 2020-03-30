@@ -186,6 +186,18 @@ namespace NoteApp
 
         }
 
+        public void BoxHover(object sender, MouseEventArgs e)
+        {
+            var thisBox = sender as RichTextBox;
+            thisBox.Background = System.Windows.Media.Brushes.Gray;
+        }
+
+        public void BoxUnhover(object sender, MouseEventArgs e)
+        {
+            var thisBox = sender as RichTextBox;
+            thisBox.Background = System.Windows.Media.Brushes.Black;
+        }
+
 
 
 

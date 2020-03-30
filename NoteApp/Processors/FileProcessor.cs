@@ -32,13 +32,18 @@ namespace NoteApp
         public string LastEdit(string path)
         {
             int lastEdit = CalculateEdit(path);
-            if (lastEdit == 0)
+            if (lastEdit <= 1)
             {
-                return "Today";
+                if(lastEdit == 0)
+                {
+                    return "Today";
+
+                }
+                return "Yesterday";
             }
             else
             {
-                string edit = lastEdit + " DAYS AGO";
+                string edit = lastEdit + " Days Ago";
                 return edit;
             }
 
