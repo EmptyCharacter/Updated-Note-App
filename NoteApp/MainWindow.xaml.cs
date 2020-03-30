@@ -187,6 +187,22 @@ namespace NoteApp
 
         }
 
+        //Return last edit in string format
+        public string LastEdit(double lastEdit)
+        {
+            if(lastEdit == 0)
+            {
+                return "TODAY";
+            }
+            else
+            {
+                string edit = lastEdit + " DAYS AGO";
+                return edit;
+            }
+            
+        }
+
+        //Calculate how long ago file was last edited
         public double CalculateEdit(string path)
         {
             DateTime now = DateTime.Now;
