@@ -181,18 +181,19 @@ namespace NoteApp
             string newt = Path.Combine(folderPath, newName);
             string time = File.GetLastWriteTime(newt).ToString();
             newtTemp = newt;
-            TimeSpan print = CalculateEdit(newName);
+            double print = CalculateEdit(newName);
             LoadXamlPackage(newt); 
            
 
         }
 
-        public TimeSpan CalculateEdit(string path)
+        public double CalculateEdit(string path)
         {
             DateTime now = DateTime.Now;
             DateTime lastEdit = File.GetLastWriteTime(path);
-            TimeSpan temp = now - lastEdit;
-            return temp;
+            var temp = now - lastEdit;
+            var newTemp = temp.TotalDays;
+            return newTemp;
         }
 
         /*-------------------Helper Methods for PreviewBoxClicked Event -------------------------*/
