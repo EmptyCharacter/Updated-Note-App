@@ -178,23 +178,24 @@ namespace NoteApp
             RichTextBox tempBox = new RichTextBox();
             string newName = UnfomatFile(name);
             string newt = Path.Combine(folderPath, newName);
-            tempBox = LoadXamlPackage(newt);
-            StackHere.Children.Remove(thisBox);
-            DockHere.Children.Add(tempBox);
+            LoadXamlPackage(newt);
+           // tempBox = LoadXamlPackage(newt);
+            //StackHere.Children.Remove(thisBox);
+            //DockHere.Children.Add(tempBox);
 
         }
 
-        RichTextBox LoadXamlPackage(string _fileName)
+        void LoadXamlPackage(string _fileName)
         {
             TextRange ranges;
             FileStream fStream;
             
                 RichTextBox box = new RichTextBox();
-                ranges = new TextRange(box.Document.ContentStart, box.Document.ContentEnd);
+                ranges = new TextRange(yes.Document.ContentStart, yes.Document.ContentEnd);
                 fStream = new FileStream(_fileName, FileMode.OpenOrCreate);
                 ranges.Load(fStream, DataFormats.XamlPackage);
-                return box;
-                //fStream.Close();
+                
+                fStream.Close();
             
         }
 
