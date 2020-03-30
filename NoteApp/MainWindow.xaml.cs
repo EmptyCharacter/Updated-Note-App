@@ -121,6 +121,7 @@ namespace NoteApp
             
         }
 
+        //Helper method for SaveFile()
         private void SaveXamlPackage(string _fileName)
         {
             this.Dispatcher.Invoke(() =>
@@ -136,6 +137,7 @@ namespace NoteApp
            
         }
         
+        //Handler for TextHasChangedEvent
         private void OnAutoSaveTimer(object sender, ElapsedEventArgs e)
         {
             
@@ -167,7 +169,7 @@ namespace NoteApp
         }
 
      
-
+        //Should display clicked text box into the main notepad view for editing
         public void PreviewBoxClicked(object sender, MouseButtonEventArgs e)
         {
             //Get the name property of this richtextbox
@@ -183,6 +185,7 @@ namespace NoteApp
 
         }
 
+        /*-------------------Helper Methods for PreviewBoxClicked Event -------------------------*/
         void LoadXamlPackage(string _fileName)
         {
             TextRange ranges;
