@@ -7,7 +7,7 @@ using System.Windows.Input;
 using System.IO;
 using System.Timers;
 using Path = System.IO.Path;
-
+using System.Windows.Media;
 
 namespace NoteApp
 {
@@ -189,7 +189,9 @@ namespace NoteApp
         public void BoxHover(object sender, MouseEventArgs e)
         {
             var thisBox = sender as RichTextBox;
-            thisBox.Background = System.Windows.Media.Brushes.Gray;
+            SolidColorBrush fadeBrush = new SolidColorBrush();
+            fadeBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#0DFFFFFF"));
+            thisBox.Background = fadeBrush;
         }
 
         public void BoxUnhover(object sender, MouseEventArgs e)

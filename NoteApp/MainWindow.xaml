@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:NoteApp"
         
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="700" ResizeMode="CanResizeWithGrip" AllowsTransparency="True" WindowStyle="None" Background="{x:Null}" MouseLeftButtonDown="Drag" >
+        Title="MainWindow" Height="600" Width="800" ResizeMode="CanResizeWithGrip" AllowsTransparency="True" WindowStyle="None" Background="{x:Null}" MouseLeftButtonDown="Drag" >
     <Border CornerRadius="5" Background="Black" BorderBrush="Gray" BorderThickness="0.3">
         <Grid>
             <Grid.RowDefinitions>
