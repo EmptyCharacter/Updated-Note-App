@@ -41,7 +41,7 @@ namespace NoteApp
         
         private string folderPath = "C:\\Users\\kl\\source\\repos\\NoteApp\\TextFiles\\";
         private string createFilePath = $@"{ DateTime.Now.Ticks}.xaml";
-        
+        private string newtTemp;
        
 
         /*-------------------------- Main ------------------------------------------*/
@@ -101,23 +101,23 @@ namespace NoteApp
         }
 
 
-        //just had idea for the panel click function
-        /* so if we have note */
+       
         
         /*--------------------------Auto Save Feature------------------------------------------*/
         private void SaveFile()
         {
 
-            SaveXamlPackage(createFilePath);
-            /*if (FindName(yes) == thisRTB)
+            if(File.Exists(newtTemp))
             {
-                SaveXamlPackage(yes, createFilePath);
-                
+                //will save to specified file
+                SaveXamlPackage(newtTemp);
             }
             else
             {
-                SaveXamlPackage(thisRTB, thisRTB.Name);
-            }*/
+                //other wise will save to a new file
+                SaveXamlPackage(createFilePath);
+            }
+           
             
         }
 
@@ -170,18 +170,16 @@ namespace NoteApp
 
         public void PreviewBoxClicked(object sender, MouseButtonEventArgs e)
         {
-            
+            //Get the name property of this richtextbox
             var thisBox = sender as RichTextBox;
             string name = thisBox.Name;
 
-
-            RichTextBox tempBox = new RichTextBox();
+            //Format this string and pass it through loadxaml method to load into main notepad
             string newName = UnfomatFile(name);
             string newt = Path.Combine(folderPath, newName);
+            newtTemp = newt;
             LoadXamlPackage(newt);
-           // tempBox = LoadXamlPackage(newt);
-            //StackHere.Children.Remove(thisBox);
-            //DockHere.Children.Add(tempBox);
+           
 
         }
 
@@ -199,16 +197,6 @@ namespace NoteApp
             
         }
 
-        public RichTextBox WriteText(RichTextBox rtb, string file)
-        {
-            TextRange range;
-            FileStream fStream;
-
-            range = new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd);
-            fStream = new FileStream(file, FileMode.OpenOrCreate);
-            range.Load(fStream, DataFormats.XamlPackage);
-            return rtb;
-        }
 
         public string UnfomatFile(string str)
         {

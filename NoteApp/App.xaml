@@ -189,6 +189,7 @@
 
             <EventSetter Event="PreviewMouseLeftButtonDown" Handler="PreviewBoxClicked"/>
             <Setter Property="FontFamily" Value="Arial"/>
+            <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="TextElement.DataContext" Value="{Binding}"/>
             <Setter Property="SelectionBrush" Value="WhiteSmoke"/>
             <Setter Property="SelectionTextBrush" Value="WhiteSmoke"/>
