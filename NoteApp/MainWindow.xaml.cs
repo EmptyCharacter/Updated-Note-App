@@ -179,10 +179,20 @@ namespace NoteApp
             //Format this string and pass it through loadxaml method to load into main notepad
             string newName = UnfomatFile(name);
             string newt = Path.Combine(folderPath, newName);
+            string time = File.GetLastWriteTime(newt).ToString();
             newtTemp = newt;
-            LoadXamlPackage(newt);
+            TimeSpan print = CalculateEdit(newName);
+            LoadXamlPackage(newt); 
            
 
+        }
+
+        public TimeSpan CalculateEdit(string path)
+        {
+            DateTime now = DateTime.Now;
+            DateTime lastEdit = File.GetLastWriteTime(path);
+            TimeSpan temp = now - lastEdit;
+            return temp;
         }
 
         /*-------------------Helper Methods for PreviewBoxClicked Event -------------------------*/

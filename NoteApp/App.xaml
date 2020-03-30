@@ -189,7 +189,8 @@
 
             <EventSetter Event="PreviewMouseLeftButtonDown" Handler="PreviewBoxClicked"/>
             <Setter Property="FontFamily" Value="Arial"/>
-            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="12"/>
             <Setter Property="TextElement.DataContext" Value="{Binding}"/>
             <Setter Property="SelectionBrush" Value="WhiteSmoke"/>
             <Setter Property="SelectionTextBrush" Value="WhiteSmoke"/>
@@ -197,7 +198,7 @@
             <Setter Property="BorderBrush" Value="Gray"/>
             <Setter Property="BorderThickness" Value="0.3"/>
             <Setter Property="OpacityMask" Value="{x:Null}" />
-            <Setter Property="AcceptsReturn" Value="False"/>
+            
             <Setter Property="IsReadOnly" Value="False"/>
             <Setter Property="IsDocumentEnabled" Value="True"/>
             
