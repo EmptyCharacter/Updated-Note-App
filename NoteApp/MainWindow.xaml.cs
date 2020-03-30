@@ -1,20 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Media;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Media;
 using System.Timers;
-
-using System.IO;
 using Path = System.IO.Path;
 
 
@@ -57,6 +48,8 @@ namespace NoteApp
         }
 
          /*-------------------------- Title Bar Buttons------------------------------------------*/
+
+        //Events for title bar buttons
         private void Drag(object sender, MouseButtonEventArgs e)
         {
             try
@@ -156,7 +149,14 @@ namespace NoteApp
             }
         }
 
+
+
+
+
         /*---------------------------------- Events ----------------------------------------------------*/
+            
+
+        //Should start timer when the contents of textbox changes
         private void TextHasChanged(object sender, TextChangedEventArgs e)
         { 
                 //thisRTB = sender as RichTextBox;
@@ -167,6 +167,7 @@ namespace NoteApp
                 autoSaveTimer.Enabled = true;
            
         }
+
 
      
         //Should display clicked text box into the main notepad view for editing
@@ -179,38 +180,14 @@ namespace NoteApp
             //Format this string and pass it through loadxaml method to load into main notepad
             string newName = UnfomatFile(name);
             string newt = Path.Combine(folderPath, newName);
-            string time = File.GetLastWriteTime(newt).ToString();
             newtTemp = newt;
-            double print = CalculateEdit(newName);
             LoadXamlPackage(newt); 
            
 
         }
 
-        //Return last edit in string format
-        public string LastEdit(double lastEdit)
-        {
-            if(lastEdit == 0)
-            {
-                return "TODAY";
-            }
-            else
-            {
-                string edit = lastEdit + " DAYS AGO";
-                return edit;
-            }
-            
-        }
 
-        //Calculate how long ago file was last edited
-        public double CalculateEdit(string path)
-        {
-            DateTime now = DateTime.Now;
-            DateTime lastEdit = File.GetLastWriteTime(path);
-            var temp = now - lastEdit;
-            var newTemp = temp.TotalDays;
-            return newTemp;
-        }
+
 
         /*-------------------Helper Methods for PreviewBoxClicked Event -------------------------*/
         void LoadXamlPackage(string _fileName)

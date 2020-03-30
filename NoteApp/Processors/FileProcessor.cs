@@ -13,7 +13,9 @@ namespace NoteApp
         private List<string> fileRepo;
         private readonly FileProcessor fp;
         
+        /*----------------Methods to retrive and process files from directory-------------------------*/
 
+        //Returns a list of files within specified directory
         public List<string> LoadFilesToList()
         {
             List<string> thisList = Directory.EnumerateFiles(folderPath, "*.xaml").ToList();
@@ -25,5 +27,39 @@ namespace NoteApp
             newList.Reverse();
             return newList;
         }
+
+        //Return last edit in string format
+        public string LastEdit(string path)
+        {
+            int lastEdit = CalculateEdit(path);
+            if (lastEdit == 0)
+            {
+                return "Today";
+            }
+            else
+            {
+                string edit = lastEdit + " DAYS AGO";
+                return edit;
+            }
+
+        }
+
+        //Calculate how long ago file was last edited
+        public int CalculateEdit(string path)
+        {
+            DateTime now = DateTime.Now;
+            DateTime lastEdit = File.GetLastWriteTime(path);
+            var temp = now - lastEdit;
+            var newTemp = (int)temp.TotalDays;
+            return newTemp;
+        }
+
+
+
+
+
+
+
+
     }
 }

@@ -13,6 +13,9 @@ namespace NoteApp
     {
         
         private List<string> fileList;
+
+
+        /*----------------- Methods to process files and load them to preview panel ------------------------*/
         public PreviewPanelProcessor()
         {
 
