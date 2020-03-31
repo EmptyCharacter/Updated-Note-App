@@ -4,31 +4,50 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NoteApp"
+        
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" ResizeMode="CanResizeWithGrip" AllowsTransparency="True" WindowStyle="None" Background="{x:Null}" MouseLeftButtonDown="Drag">
+        Title="MainWindow" Height="600" Width="900" ResizeMode="CanResizeWithGrip" AllowsTransparency="True" WindowStyle="None" Background="{x:Null}" MouseLeftButtonDown="Drag" >
     <Border CornerRadius="5" Background="Black" BorderBrush="Gray" BorderThickness="0.3">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="7*"></RowDefinition>
-                
+                <RowDefinition Height="60*"/>
+                <RowDefinition Height="295*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="2*"></ColumnDefinition>
+                <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                <ColumnDefinition Width="3*"></ColumnDefinition>
                 <ColumnDefinition Width="4*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
+            
             <Ellipse Fill="Red" Grid.Row="0" Grid.Column="2" Height="15" Width="15" HorizontalAlignment="Right"
-                VerticalAlignment="Top" Margin="0,10,10,0" MouseLeftButtonDown="closeApp" Cursor="Hand"></Ellipse>
-            <Ellipse Fill="Yellow" Grid.Row="0" Grid.Column="2" Height="15" Width="15" HorizontalAlignment="Right"
-                VerticalAlignment="Top" Margin="0,10,30,0" MouseLeftButtonDown="minimizeApp" Cursor="Hand"></Ellipse>
-            <RichTextBox Grid.Row="1" Grid.Column="2"  Background="Black" SelectionTextBrush="{x:Null}" Foreground="#7FD4C8C8" SelectionBrush="{x:Null}"></RichTextBox>
-            <DockPanel Grid.Row="1" Grid.Column="1">
-                <TextBlock></TextBlock>
-                <TextBlock></TextBlock>
-                <TextBlock></TextBlock>
+                VerticalAlignment="Top" Margin="0,10,10,0" MouseLeftButtonDown="CloseApp" Cursor="Hand"></Ellipse>
+            <Ellipse Fill="Orange" Grid.Row="0" Grid.Column="2" Height="15" Width="15" HorizontalAlignment="Right"
+                VerticalAlignment="Top" Margin="0,10,50,0" MouseLeftButtonDown="MinimizeApp" Cursor="Hand"></Ellipse>
+            <Ellipse Fill="LimeGreen" Grid.Row="0" Grid.Column="2" Height="15" Width="15" HorizontalAlignment="Right"
+                VerticalAlignment="Top" Margin="0,10,30,0" MouseLeftButtonDown="MaximizeApp" Cursor="Hand"></Ellipse>
+
+            <DockPanel x:Name="DockHere"  Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="320,0,0,0" Grid.RowSpan="2"  >
+                <RichTextBox  x:Name="yes"  Grid.Row="1" Grid.Column="2" Padding="50,20,20,50" BorderThickness="0, 0.4, 0.4, 0.4" Background="Black" BorderBrush="Gray" AcceptsReturn="False"  Foreground="White" IsDocumentEnabled="True" TextChanged="TextHasChanged" SelectionOpacity="0" SelectionBrush="{x:Null}" SelectionTextBrush="White"/>
             </DockPanel>
+
+            <ScrollViewer Grid.Row="1" Width="Auto" BorderBrush="Gray" BorderThickness="3, 3, 50, 3" Grid.ColumnSpan="2" Margin="53,0,0,0" Grid.RowSpan="2" >
+
+                <StackPanel x:Name="StackHere"  ScrollViewer.VerticalScrollBarVisibility="Visible" >
+
+                </StackPanel>
+
+            </ScrollViewer>
+
+
+            
+            <Border Grid.Row="1" Grid.Column="0" BorderBrush="Gray" Grid.ColumnSpan="1"  Grid.RowSpan="2" Width="50">
+                <DockPanel HorizontalAlignment="Left">
+                    <Frame DockPanel.Dock="Left"/>
+                </DockPanel>
+            </Border>
+            
+            
             
         </Grid>
     </Border>
