@@ -202,6 +202,7 @@
             <Setter Property="IsReadOnly" Value="False"/>
             <Setter Property="IsDocumentEnabled" Value="True"/>
             <Setter Property="Height" Value="125"/>
+            <Setter Property="Width" Value="Auto"/>
         </Style>
 
         
