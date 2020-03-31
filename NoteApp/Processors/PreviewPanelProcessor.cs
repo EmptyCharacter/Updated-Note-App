@@ -53,7 +53,6 @@ namespace NoteApp
                 Style style = Application.Current.FindResource("PreviewRTB") as Style;
                 rtb.Style = style;
                 this.Select(rtb, 0, int.MaxValue, Colors.WhiteSmoke);
-                rtb.SetInnerMargins()
                 styleAdded.Add(rtb);
             }
             return styleAdded;

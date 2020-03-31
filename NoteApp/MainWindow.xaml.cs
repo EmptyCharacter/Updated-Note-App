@@ -9,6 +9,7 @@ using System.Timers;
 using Path = System.IO.Path;
 using System.Windows.Media;
 
+
 namespace NoteApp
 {
     /// <summary>
@@ -39,6 +40,7 @@ namespace NoteApp
 
         public MainWindow()
         {
+            
             InitializeComponent();
             PreviewPanelProcessor pre = new PreviewPanelProcessor();
             pre.LoadContent(StackHere);
