@@ -183,7 +183,8 @@
                 </Setter>
             </Style>
 
-        
+
+      
 
         <Style x:Key="PreviewRTB" TargetType="{x:Type RichTextBox}">
 
