@@ -197,8 +197,8 @@
             <Setter Property="FontSize" Value="14"/>
 
             <Setter Property="Background" Value="#494949"/>
-            <Setter Property="BorderBrush" Value="Gray"/>
-            <Setter Property="BorderThickness" Value="0.4, 0.4, 0.4,0.4"/>
+            <Setter Property="BorderBrush" Value="#D2D4C8"/>
+            <Setter Property="BorderThickness" Value="0.2"/>
      
             <Setter Property="Height" Value="125"/>
             <Setter Property="Width" Value="Auto"/>
