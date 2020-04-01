@@ -191,16 +191,15 @@
             <EventSetter Event="PreviewMouseLeftButtonDown" Handler="PreviewBoxClicked"/>
             <EventSetter Event="MouseEnter" Handler="BoxHover"/>
             <EventSetter Event="MouseLeave" Handler="BoxUnhover"/>
+            <Setter Property="Block.LineHeight" Value="2"/>
             <Setter Property="FontFamily" Value="Arial"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="SelectionBrush" Value="WhiteSmoke"/>
-            <Setter Property="SelectionTextBrush" Value="WhiteSmoke"/>
-            <Setter Property="Background" Value="Black"/>
+            <Setter Property="FontSize" Value="14"/>
+
+            <Setter Property="Background" Value="#494949"/>
             <Setter Property="BorderBrush" Value="Gray"/>
             <Setter Property="BorderThickness" Value="0.4, 0.4, 0.4,0.4"/>
-            <Setter Property="IsReadOnly" Value="False"/>
-            <Setter Property="IsDocumentEnabled" Value="True"/>
+     
             <Setter Property="Height" Value="125"/>
             <Setter Property="Width" Value="Auto"/>
         </Style>
