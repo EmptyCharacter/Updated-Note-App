@@ -29,23 +29,20 @@
                 VerticalAlignment="Top" Margin="0,10,30,0" MouseLeftButtonDown="MaximizeApp" Cursor="Hand"></Ellipse>
 
             <DockPanel x:Name="DockHere"  Grid.Row="2" Grid.Column="2"  >
-                <RichTextBox  x:Name="yes" BorderThickness="0.3" Background="#494949" BorderBrush="Gray" Foreground="White" IsDocumentEnabled="True" TextChanged="TextHasChanged" SelectionTextBrush="#E0E2DB"/>
+                <RichTextBox  x:Name="yes" FontFamily="./Resources/#Gogoia" BorderThickness="0.3" Background="#494949" BorderBrush="Gray" Foreground="White" IsDocumentEnabled="True" TextChanged="TextHasChanged" SelectionTextBrush="#E0E2DB"/>
             </DockPanel>
 
-            <DockPanel Grid.Row="0" Grid.Column="1">
+            <Border Grid.Column="1" Grid.Row="0" BorderBrush="Gray" BorderThickness="0.2, 0.2, 0.2, 0.05">
                 
-            </DockPanel>
-
-            <ScrollViewer Grid.Row="2" Grid.Column="1" BorderThickness="0.1" BorderBrush="Gray"  >
-
-                <StackPanel x:Name="StackHere"  ScrollViewer.VerticalScrollBarVisibility="Visible" >
-
-                </StackPanel>
-
-            </ScrollViewer>
-
-
+            </Border>
             
+            <Border Grid.Row="2" Grid.Column="1" BorderThickness="0.1" BorderBrush="Gray">
+                <ScrollViewer>
+                    <StackPanel x:Name="StackHere" ScrollViewer.VerticalScrollBarVisibility="Visible" Width="359.96"/>
+                </ScrollViewer>
+            </Border>
+
+
             <Border Grid.Row="1" Grid.Column="0" BorderBrush="Gray" Grid.ColumnSpan="1"  Grid.RowSpan="2" Width="50">
                 <DockPanel HorizontalAlignment="Left">
                     <Frame DockPanel.Dock="Left"/>
