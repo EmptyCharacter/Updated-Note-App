@@ -10,8 +10,7 @@ namespace NoteApp
     {
         public string folderPath = "C:\\Users\\kl\\source\\repos\\NoteApp\\TextFiles\\";
         public string createFilePath = $@"{ DateTime.Now.Ticks}.xaml";
-        private List<string> fileRepo;
-        private readonly FileProcessor fp;
+
         
         /*----------------Methods to retrive and process files from directory-------------------------*/
 

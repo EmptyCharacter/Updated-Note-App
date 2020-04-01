@@ -192,9 +192,10 @@ namespace NoteApp
         {
             var thisBox = sender as RichTextBox;
             SolidColorBrush fadeBrush = new SolidColorBrush();
-            fadeBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#05111010"));
-            thisBox.Background = fadeBrush;
-
+            fadeBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#2E8B57"));
+            //thisBox.BorderBrush = fadeBrush;
+            thisBox.BorderThickness = new Thickness(5,5,5,5);
+   
         }
 
         public void BoxUnhover(object sender, MouseEventArgs e)
@@ -203,6 +204,7 @@ namespace NoteApp
             SolidColorBrush fadeBrush = new SolidColorBrush();
             fadeBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#05111010"));
             thisBox.Background = fadeBrush;
+            
         }
 
 
