@@ -192,7 +192,7 @@ namespace NoteApp
         {
             var thisBox = sender as RichTextBox;
             SolidColorBrush fadeBrush = new SolidColorBrush();
-            fadeBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#595959"));
+            fadeBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#05111010"));
             thisBox.Background = fadeBrush;
 
         }
@@ -201,7 +201,7 @@ namespace NoteApp
         {
             var thisBox = sender as RichTextBox;
             SolidColorBrush fadeBrush = new SolidColorBrush();
-            fadeBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#494949"));
+            fadeBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#05111010"));
             thisBox.Background = fadeBrush;
         }
 

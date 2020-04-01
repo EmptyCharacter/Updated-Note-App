@@ -197,9 +197,9 @@
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="FontSize" Value="14"/>
 
-            <Setter Property="Background" Value="#494949"/>
+            <Setter Property="Background" Value="#05111010"/>
             <Setter Property="BorderBrush" Value="#D2D4C8"/>
-            <Setter Property="BorderThickness" Value="0.2"/>
+            <Setter Property="BorderThickness" Value="0.01"/>
      
             <Setter Property="Height" Value="125"/>
             <Setter Property="Width" Value="Auto"/>

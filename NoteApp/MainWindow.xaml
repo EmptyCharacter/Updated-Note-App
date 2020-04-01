@@ -7,7 +7,7 @@
         
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="900" ResizeMode="CanResizeWithGrip" AllowsTransparency="True" WindowStyle="None" Background="{x:Null}" MouseLeftButtonDown="Drag" >
-    <Border CornerRadius="5" Background="#494949" BorderBrush="Gray" BorderThickness="0.3">
+    <Border CornerRadius="5" Background="#D8111010" BorderBrush="Gray" BorderThickness="0.3">
         <Grid>
             <Grid.RowDefinitions>
                 
@@ -29,13 +29,13 @@
                 VerticalAlignment="Top" Margin="0,10,30,0" MouseLeftButtonDown="MaximizeApp" Cursor="Hand"></Ellipse>
 
             <DockPanel x:Name="DockHere"  Grid.Row="2" Grid.Column="2"  >
-                <RichTextBox FontSize="16" FontFamily="C:\Users\kl\source\repos\NoteApp\NoteApp\GOGOIA-Regular.ttf" x:Name="yes" BorderThickness="0.3" Background="#494949" BorderBrush="Gray" Foreground="White" IsDocumentEnabled="True" TextChanged="TextHasChanged" SelectionTextBrush="#E0E2DB"/>
+                <RichTextBox FontSize="16" x:Name="yes" BorderThickness="0.1" Background="#05111010" BorderBrush="Gray"  IsDocumentEnabled="True" TextChanged="TextHasChanged" Foreground="{x:Null}" SelectionBrush="{x:Null}"/>
             </DockPanel>
 
-            <Border Grid.Column="1" Grid.Row="0" BorderBrush="Gray" BorderThickness="0.2, 0.2, 0.2, 0.05">
+            <Border Grid.Column="1" Grid.Row="0" BorderBrush="Gray" BorderThickness="0.075, 0.075, 0.2, 0.2">
                 <StackPanel>
-                    <Label FontSize="20" Padding="20,60,50,20">NOTES</Label>
-                    <Label Padding="20,10,50,20">5 Notes</Label>
+                    <Label FontSize="20" FontFamily="Arial" Padding="20,60,50,20" Foreground="DarkGray">NOTES</Label>
+                    <Label FontFamily="Arial" Padding="20,10,50,20" Foreground="DarkGray">5 Notes</Label>
                 </StackPanel>
                 
             </Border>
