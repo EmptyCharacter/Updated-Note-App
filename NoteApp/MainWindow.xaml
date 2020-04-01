@@ -27,11 +27,12 @@
                 VerticalAlignment="Top" Margin="0,10,50,0" MouseLeftButtonDown="MinimizeApp" Cursor="Hand"></Ellipse>
             <Ellipse Fill="LimeGreen" Grid.Row="0" Grid.Column="2" Height="15" Width="15" HorizontalAlignment="Right"
                 VerticalAlignment="Top" Margin="0,10,30,0" MouseLeftButtonDown="MaximizeApp" Cursor="Hand"></Ellipse>
-
-            <DockPanel x:Name="DockHere"  Grid.Row="2" Grid.Column="2"  >
-                <RichTextBox FontSize="16" x:Name="yes" BorderThickness="0.1" Background="#05111010" BorderBrush="Gray"  IsDocumentEnabled="True" TextChanged="TextHasChanged" Foreground="{x:Null}" SelectionBrush="{x:Null}"/>
-            </DockPanel>
-
+            
+            <Border BorderThickness="2"   Grid.Row="2" Grid.Column="2" >
+                <DockPanel x:Name="DockHere">
+                    <RichTextBox Margin="40,40,40,30" FontSize="16" x:Name="yes" Background="#05111010"  IsDocumentEnabled="True" TextChanged="TextHasChanged" Foreground="{x:Null}" SelectionBrush="{x:Null}" BorderBrush="{x:Null}"/>
+                </DockPanel>
+            </Border>
             <Border Grid.Column="1" Grid.Row="0" BorderBrush="Gray" BorderThickness="0.075, 0.075, 0.2, 0.2">
                 <StackPanel>
                     <Label FontSize="20" FontFamily="Arial" Padding="20,60,50,20" Foreground="DarkGray">NOTES</Label>
