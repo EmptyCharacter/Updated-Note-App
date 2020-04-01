@@ -29,10 +29,14 @@
                 VerticalAlignment="Top" Margin="0,10,30,0" MouseLeftButtonDown="MaximizeApp" Cursor="Hand"></Ellipse>
 
             <DockPanel x:Name="DockHere"  Grid.Row="2" Grid.Column="2"  >
-                <RichTextBox FontSize="16" FontFamily="./#GOGOIA" x:Name="yes" BorderThickness="0.3" Background="#494949" BorderBrush="Gray" Foreground="White" IsDocumentEnabled="True" TextChanged="TextHasChanged" SelectionTextBrush="#E0E2DB"/>
+                <RichTextBox FontSize="16" FontFamily="C:\Users\kl\source\repos\NoteApp\NoteApp\GOGOIA-Regular.ttf" x:Name="yes" BorderThickness="0.3" Background="#494949" BorderBrush="Gray" Foreground="White" IsDocumentEnabled="True" TextChanged="TextHasChanged" SelectionTextBrush="#E0E2DB"/>
             </DockPanel>
 
             <Border Grid.Column="1" Grid.Row="0" BorderBrush="Gray" BorderThickness="0.2, 0.2, 0.2, 0.05">
+                <StackPanel>
+                    <Label FontSize="20" Padding="20,60,50,20">NOTES</Label>
+                    <Label Padding="20,10,50,20">5 Notes</Label>
+                </StackPanel>
                 
             </Border>
             
