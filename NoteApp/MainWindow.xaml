@@ -29,7 +29,7 @@
                 VerticalAlignment="Top" Margin="0,10,30,0" MouseLeftButtonDown="MaximizeApp" Cursor="Hand"></Ellipse>
 
             <DockPanel x:Name="DockHere"  Grid.Row="2" Grid.Column="2"  >
-                <RichTextBox FontSize="16" FontFamily="GOGOIA-Regular" x:Name="yes" BorderThickness="0.3" Background="#494949" BorderBrush="Gray" Foreground="White" IsDocumentEnabled="True" TextChanged="TextHasChanged" SelectionTextBrush="#E0E2DB"/>
+                <RichTextBox FontSize="16" FontFamily="./#GOGOIA" x:Name="yes" BorderThickness="0.3" Background="#494949" BorderBrush="Gray" Foreground="White" IsDocumentEnabled="True" TextChanged="TextHasChanged" SelectionTextBrush="#E0E2DB"/>
             </DockPanel>
 
             <Border Grid.Column="1" Grid.Row="0" BorderBrush="Gray" BorderThickness="0.2, 0.2, 0.2, 0.05">
