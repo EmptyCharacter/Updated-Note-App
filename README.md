@@ -15,6 +15,7 @@ Next
 * Styling
 * Migrate to database 
 
-![f0fccb5d2564b19f7f866b66c2027bd8](https://user-images.githubusercontent.com/56858535/78274595-2ad4af80-74ac-11ea-8f44-58636a864427.png)
+![1cb25087893eb2b4595417e23f308edf](https://user-images.githubusercontent.com/56858535/78279615-7f2f5d80-74b3-11ea-9883-ee886dfc696e.png)
+
 
 
