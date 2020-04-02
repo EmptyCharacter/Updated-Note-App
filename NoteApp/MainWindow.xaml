@@ -30,7 +30,7 @@
             
             <Border BorderBrush="Gray" BorderThickness="0,0.2,0,0"   Grid.Row="2" Grid.Column="2" >
                 <DockPanel x:Name="DockHere">
-                    <RichTextBox Margin="40,30,40,30" FontSize="16" x:Name="yes" Background="#00111010"  IsDocumentEnabled="True" TextChanged="TextHasChanged" Foreground="{x:Null}" SelectionBrush="{x:Null}" BorderBrush="{x:Null}"/>
+                    <RichTextBox  Margin="40,30,40,30" FontSize="16" x:Name="yes" Background="#00111010"  IsDocumentEnabled="True" TextChanged="TextHasChanged" Foreground="{x:Null}" SelectionBrush="{x:Null}" BorderBrush="{x:Null}"/>
                 </DockPanel>
             </Border>
             <Border Grid.Column="1" Grid.Row="0" BorderBrush="Gray" BorderThickness="0.075, 0.075, 0.2, 0.2">
@@ -43,7 +43,7 @@
             
             <Border Grid.Row="2" Grid.Column="1" BorderThickness="0.1" BorderBrush="Gray">
                 <ScrollViewer>
-                    <StackPanel x:Name="StackHere" Width="359.96"/>
+                    <StackPanel x:Name="StackHere"/>
                 </ScrollViewer>
             </Border>
 
