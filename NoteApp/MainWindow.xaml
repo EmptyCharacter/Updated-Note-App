@@ -30,7 +30,7 @@
             
             <Border BorderBrush="Gray" BorderThickness="0,0.2,0,0"   Grid.Row="2" Grid.Column="2" >
                 <DockPanel x:Name="DockHere">
-                    <RichTextBox  Margin="40,30,40,30" FontSize="16" FontWeight="SemiBold" x:Name="yes" Background="#00111010"  IsDocumentEnabled="True" TextChanged="TextHasChanged" BorderThickness="0" BorderBrush="Transparent" Foreground="DarkGray" />
+                    <RichTextBox  Margin="20,30,40,30" FontSize="16" FontWeight="SemiBold" x:Name="yes" Background="#00111010"  IsDocumentEnabled="True" TextChanged="TextHasChanged" BorderThickness="0" BorderBrush="Transparent" Foreground="DarkGray" />
                 </DockPanel>
             </Border>
             <Border Grid.Column="1" Grid.Row="0" BorderBrush="Gray" BorderThickness="0.075, 0.075, 0.2, 0.2">
